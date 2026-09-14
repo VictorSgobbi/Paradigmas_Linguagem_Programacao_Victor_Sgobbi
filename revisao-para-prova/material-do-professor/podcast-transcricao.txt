@@ -1,0 +1,61 @@
+Duda: Oi, gente! Hoje o papo é sobre Revisão da Primeira Prova Bimestral. Sem desfile de definições: a ideia é acompanhar como os conceitos se conectam, o que mudam em exemplos concretos e como justificar cada explicação.
+
+Vicente: Ótimo, porque eu já tenho uma pergunta: por que estudar tudo isso se eu consigo abrir a documentação quando precisar?
+
+Junior: Finalmente alguém sensato. Se eu consigo repetir os nomes, já dominei o assunto. Relações e exemplos só servem para complicar.
+
+Duda: Junior chegou com cem por cento de confiança e vinte por cento de contexto. A documentação ajuda, claro, mas repetir um termo sem explicar suas relações pode esconder justamente o erro importante.
+
+Vicente: Tá, mas me ajuda a ligar os pontos. Como Razões para estudar conceitos de LP, Critérios de Avaliação de Linguagem, Legibilidade e ortogonalidade, Capacidade de escrita, Confiabilidade e verificação de tipos, Custo de uma linguagem, Influências no Projeto de Linguagens se conectam aos objetivos desta aula?
+
+Junior: Eu ainda acho o seguinte: entender Razões para estudar conceitos de LP é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Boa tentativa, Junior, mas o atalho cortou justamente a parte importante. O estudo dos conceitos de linguagens de programação amplia a expressão de ideias, fundamenta a escolha de linguagens, facilita a aprendizagem de novas linguagens, melhora o uso das já conhecidas e ajuda a compreender a implementação. Legibilidade, capacidade de escrita, confiabilidade e custo são critérios usados para comparar a adequação de uma linguagem, sem pressupor que uma única linguagem maximize todos eles. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Deixa eu testar se entendi. Como Categorias de Linguagens, Trade-offs no Projeto de Linguagens, Métodos de Implementação e Ambientes de Programação, Evolução das principais linguagens de programação, Plankalkül, Pseudocódigos e interpretação inicial, Fortran e computação científica se conectam aos objetivos desta aula?
+
+Junior: Não me convenceu. Minha tese é: entender Categorias de Linguagens é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: A confiança está impecável; a conclusão, nem tanto. As categorias apresentadas são imperativas, funcionais, lógicas e híbridas de marcação-programação. Elas diferem pela centralidade de variáveis e atribuições, aplicação de funções, regras declarativas ou combinação de marcação com ações de programação. Uma decisão de projeto pode beneficiar um critério e prejudicar outro. Os contrastes destacados são confiabilidade versus custo de execução, legibilidade versus capacidade de escrita e flexibilidade versus confiabilidade. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: E quando isso chega a um projeto real? Como Lisp, Scheme e programação funcional, Linguagens orientadas por domínio, Linguagens dinâmicas: APL e SNOBOL, Linhagens imperativa, lógica e orientada a objetos, Java, Lua e estratégias de implementação, Linguagens híbridas de marcação-programação, Sintaxe e Semântica se conectam aos objetivos desta aula?
+
+Junior: Vou insistir nesta ideia: entender Lisp, Scheme e programação funcional é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Quase. Se fosse uma prova de chute, você estava competitivo. A linhagem de Lisp favorece computação baseada em funções e listas. Scheme destaca tamanho reduzido, escopo estático e funções como entidades de primeira classe, que podem ser atribuídas, passadas e retornadas. COBOL e Basic ilustram projetos guiados por públicos e domínios distintos: processamento comercial com notação próxima da linguagem natural e ampliação do acesso à programação para estudantes não especializados. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Tenho uma dúvida que parece simples. Como Sentença, linguagem, lexema e token, Reconhecedores e Geradores, FNB e Gramáticas Livres de Contexto, Terminais, não terminais e regras, Recursão, derivação e forma sentencial, Árvore de Análise Sintática, Ambiguidade em Gramáticas se conectam aos objetivos desta aula?
+
+Junior: Sinceramente, continuo defendendo isto: entender Sentença, linguagem, lexema e token é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Respira, Junior. O mundo real acabou de pedir mais contexto. Sentença é uma cadeia de caracteres sobre um alfabeto; linguagem é um conjunto de sentenças; lexema é uma unidade sintática elementar; e token é uma categoria que reúne lexemas. Um reconhecedor decide se uma cadeia pertence à linguagem. Um gerador descreve ou produz as sentenças da linguagem e oferece uma estrutura com a qual uma sentença pode ser comparada. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Tá, mas me ajuda a ligar os pontos. Como FNB Extendida, Semântica Estática e Semântica Dinâmica, Análise Léxica e Análise Sintática, Separação entre léxico e parser, Casamento de padrões e geração de tokens, Implementação do analisador léxico, Objetivos da análise sintática se conectam aos objetivos desta aula?
+
+Junior: Eu ainda acho o seguinte: entender FNB Extendida é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Boa tentativa, Junior, mas o atalho cortou justamente a parte importante. A FNBE usa colchetes para termos opcionais, parênteses e barras para alternativas e chaves para repetições de zero ou mais termos. A semântica estática trata restrições que uma GLC não descreve adequadamente e pode ser especificada por gramáticas de atributos. A semântica dinâmica pode ser descrita pelos métodos operacional, denotacional e axiomático. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Deixa eu testar se entendi. Como Análise Sintática Descendente, Lookahead, Recursão à esquerda, Análise Sintática Ascendente e redução, Analisadores LR, ACTION e GOTO, Nomes e palavras especiais, Variável e seus atributos se conectam aos objetivos desta aula?
+
+Junior: Não me convenceu. Minha tese é: entender Análise Sintática Descendente é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: A confiança está impecável; a conclusão, nem tanto. A análise descendente constrói a árvore a partir da raiz, usa derivação mais à esquerda e pode ser implementada por uma coleção de subprogramas, muitos deles recursivos. Quando um não terminal possui alternativas, o analisador descendente compara o próximo token com os primeiros tokens que cada regra pode gerar. A ausência de correspondência indica erro sintático. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: E quando isso chega a um projeto real? Como Endereço e apelidos, Vinculação e tempo de vinculação, Vinculação estática e dinâmica, Declaração e vinculação dinâmica de tipos, Alocação, desalocação e tempo de vida, Categorias de variáveis por tempo de vida, Escopo estático, escopo dinâmico e ambiente de referenciamento se conectam aos objetivos desta aula?
+
+Junior: Vou insistir nesta ideia: entender Endereço e apelidos é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Quase. Se fosse uma prova de chute, você estava competitivo. O endereço é a posição de memória associada à variável. Quando dois nomes acessam a mesma posição, eles são apelidos; isso pode prejudicar a legibilidade porque o programador precisa acompanhar referências alternativas. Vinculação é uma associação entre atributo e entidade, como variável e tipo ou operação e símbolo. Tempo de vinculação é o momento em que a associação ocorre. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Tenho uma dúvida que parece simples. Como Escopo, tempo de vida e constantes nomeadas se conectam aos objetivos desta aula?
+
+Junior: Sinceramente, continuo defendendo isto: entender Escopo, tempo de vida e constantes nomeadas é apenas repetir o nome. As relações com os outros conceitos não mudam nada.
+
+Duda: Respira, Junior. O mundo real acabou de pedir mais contexto. Escopo e tempo de vida são conceitos diferentes: um trata visibilidade textual e o outro vinculação à memória. Uma constante nomeada recebe uma única vinculação de valor e favorece legibilidade, modificabilidade e parametrização. Compare definições, exemplos e consequências; é assim que as conexões ficam verificáveis.
+
+Vicente: Então uma resposta boa não é só repetir a definição. Eu preciso definir, relacionar, dar um exemplo e justificar a conclusão, certo?
+
+Junior: Certo, mas deixo registrado que decorar o título continua sendo uma estratégia de altíssima velocidade.
+
+Duda: Registrado e carinhosamente ignorado. É isso, Vicente: conecte as ideias, teste com exemplos e consulte as fontes quando quiser aprofundar. Até a próxima!

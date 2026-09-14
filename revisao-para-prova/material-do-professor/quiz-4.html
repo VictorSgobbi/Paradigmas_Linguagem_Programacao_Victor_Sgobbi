@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz — Revisão da Primeira Prova Bimestral — Quiz 4 de 4</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #eef3f8; color: #172536; }
+    main { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+    h1 { color: #17365d; }
+    .question { background: white; border-radius: .75rem; margin: 1rem 0;
+      padding: 1.25rem; box-shadow: 0 2px 10px #17365d18; }
+    label { display: block; margin: .6rem 0; padding: .7rem;
+      border: 1px solid #c8d5e3; border-radius: .4rem; cursor: pointer; }
+    label.answer-correct { background: #e6f4ea; border-color: #188038;
+      color: #0d652d; }
+    label.answer-incorrect { background: #fce8e6; border-color: #c5221f;
+      color: #a50e0e; }
+    button { background: #245b8a; border: 0; border-radius: .4rem;
+      color: white; cursor: pointer; font-weight: 700; padding: .8rem 1.2rem; }
+    .feedback { border-left: 4px solid #245b8a; margin-top: .8rem;
+      padding-left: .8rem; }
+    .objective { color: #52677d; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Revisão da Primeira Prova Bimestral — Quiz 4 de 4</h1>
+    <p>Responda às questões e confira o feedback imediatamente.</p>
+    <form id="quiz"></form>
+    <button id="check" type="button">Verificar respostas</button>
+    <p id="score" aria-live="polite"></p>
+  </main>
+  <script id="quiz-data" type="application/json">{"questions":[{"correctIndex":1,"feedback":"Analisadores LR, ACTION e GOTO: Analisadores LR são analisadores ascendentes normalmente construídos com ferramentas. A tabela ACTION determina ações com base no estado e no próximo terminal; GOTO determina o novo estado depois de uma redução usando não terminais. Objetivos relacionados: Explicar a organização de analisadores LR e a função das tabelas ACTION e GOTO.","id":"question-c40","objectiveLabels":["Explicar a organização de analisadores LR e a função das tabelas ACTION e GOTO."],"options":["O estudo dos conceitos de linguagens de programação amplia a expressão de ideias, fundamenta a escolha de linguagens, facilita a aprendizagem de novas linguagens, melhora o uso das já conhecidas e ajuda a compreender a implementação.","Analisadores LR são analisadores ascendentes normalmente construídos com ferramentas. A tabela ACTION determina ações com base no estado e no próximo terminal; GOTO determina o novo estado depois de uma redução usando não terminais.","Legibilidade, capacidade de escrita, confiabilidade e custo são critérios usados para comparar a adequação de uma linguagem, sem pressupor que uma única linguagem maximize todos eles.","Legibilidade envolve a facilidade de compreender programas. A ortogonalidade contribui para ela ao permitir que componentes básicos sejam combinados com poucas restrições e exceções."],"prompt":"Qual opção descreve melhor “Analisadores LR, ACTION e GOTO”?"},{"correctIndex":2,"feedback":"Nomes e palavras especiais: O projeto de nomes considera distinção entre maiúsculas e minúsculas e tratamento das palavras especiais. Palavra-chave é especial em certos contextos; palavra reservada não pode ser usada como nome. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.; Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5.","id":"question-c41","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5."],"options":["Desconsiderar o contexto e repetir somente uma palavra da definição.","Substituir o conceito por qualquer outro sem comparar seus significados.","Relacionar Nomes e palavras especiais às consequências observáveis, pois a síntese registra: O projeto de nomes considera distinção entre maiúsculas e minúsculas e tratamento das palavras especiais. Palavra-chave é especial em certos contextos; palavra reservada não pode ser usada como nome.","Usar o nome do conceito como resposta sem explicar suas consequências."],"prompt":"Ao analisar um exemplo da aula, como “Nomes e palavras especiais” deve orientar a explicação?"},{"correctIndex":3,"feedback":"A afirmação errada reduz Variável e seus atributos a memorização. Na aula, a síntese registra: Uma variável é uma abstração de uma célula de memória e pode ser caracterizada por nome, endereço, valor, tipo, tempo de vida e escopo.","id":"question-c42","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida."],"options":["Uma variável é uma abstração de uma célula de memória e pode ser caracterizada por nome, endereço, valor, tipo, tempo de vida e escopo.","O conceito pode ser relacionado aos objetivos e a exemplos da aula.","Uma explicação adequada distingue o conceito de ideias próximas.","Basta memorizar o nome do conceito; contexto, objetivos e consequências não alteram sua análise."],"prompt":"Sobre “Variável e seus atributos”, é errado afirmar que:"},{"correctIndex":0,"feedback":"Endereço e apelidos: O endereço é a posição de memória associada à variável. Quando dois nomes acessam a mesma posição, eles são apelidos; isso pode prejudicar a legibilidade porque o programador precisa acompanhar referências alternativas. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.; Explicar as razões para estudar conceitos de linguagens de programação e aplicar critérios de avaliação na comparação de linguagens.","id":"question-c43","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Explicar as razões para estudar conceitos de linguagens de programação e aplicar critérios de avaliação na comparação de linguagens."],"options":["Definir Endereço e apelidos, aplicá-lo a um exemplo e justificar a análise: O endereço é a posição de memória associada à variável. Quando dois nomes acessam a mesma posição, eles são apelidos; isso pode prejudicar a legibilidade porque o programador precisa acompanhar referências alternativas.","Misturar conceitos diferentes e observar apenas a conclusão final.","Escolher um exemplo sem explicar sua relação com o conceito.","Memorizar a definição e dispensar exemplos ou justificativas."],"prompt":"Qual procedimento demonstra melhor a compreensão de “Endereço e apelidos”?"},{"correctIndex":1,"feedback":"No cenário apresentado, o conceito central é Vinculação e tempo de vinculação. Vinculação é uma associação entre atributo e entidade, como variável e tipo ou operação e símbolo. Tempo de vinculação é o momento em que a associação ocorre.","id":"question-c44","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5."],"options":["Razões para estudar conceitos de LP","Vinculação e tempo de vinculação","Critérios de Avaliação de Linguagem","Legibilidade e ortogonalidade"],"prompt":"Para relacionar teoria e prática, qual conceito corresponde a esta descrição: “Vinculação é uma associação entre atributo e entidade, como variável e tipo ou operação e símbolo. Tempo de vinculação é o momento em que a associação ocorre.”?"},{"correctIndex":2,"feedback":"Vinculação estática e dinâmica: A vinculação estática ocorre antes da execução e permanece inalterada; a dinâmica ocorre pela primeira vez durante a execução ou pode mudar enquanto o programa executa. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","id":"question-c45","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida."],"options":["O estudo dos conceitos de linguagens de programação amplia a expressão de ideias, fundamenta a escolha de linguagens, facilita a aprendizagem de novas linguagens, melhora o uso das já conhecidas e ajuda a compreender a implementação.","Legibilidade, capacidade de escrita, confiabilidade e custo são critérios usados para comparar a adequação de uma linguagem, sem pressupor que uma única linguagem maximize todos eles.","A vinculação estática ocorre antes da execução e permanece inalterada; a dinâmica ocorre pela primeira vez durante a execução ou pode mudar enquanto o programa executa.","Legibilidade envolve a facilidade de compreender programas. A ortogonalidade contribui para ela ao permitir que componentes básicos sejam combinados com poucas restrições e exceções."],"prompt":"Qual opção descreve melhor “Vinculação estática e dinâmica”?"},{"correctIndex":3,"feedback":"Declaração e vinculação dinâmica de tipos: Declaração explícita associa nomes a tipos por uma sentença; declaração implícita usa convenções. Na vinculação dinâmica de tipos, atribuições podem alterar o tipo associado, aumentando flexibilidade, mas dificultando a detecção antecipada de erros. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.; Explicar as razões para estudar conceitos de linguagens de programação e aplicar critérios de avaliação na comparação de linguagens.","id":"question-c46","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Explicar as razões para estudar conceitos de linguagens de programação e aplicar critérios de avaliação na comparação de linguagens."],"options":["Desconsiderar o contexto e repetir somente uma palavra da definição.","Substituir o conceito por qualquer outro sem comparar seus significados.","Usar o nome do conceito como resposta sem explicar suas consequências.","Relacionar Declaração e vinculação dinâmica de tipos às consequências observáveis, pois a síntese registra: Declaração explícita associa nomes a tipos por uma sentença; declaração implícita usa convenções. Na vinculação dinâmica de tipos, atribuições podem alterar o tipo associado, aumentando flexibilidade, mas dificultando a detecção antecipada de erros."],"prompt":"Ao analisar um exemplo da aula, como “Declaração e vinculação dinâmica de tipos” deve orientar a explicação?"},{"correctIndex":0,"feedback":"A afirmação errada reduz Alocação, desalocação e tempo de vida a memorização. Na aula, a síntese registra: Alocação obtém uma célula de memória e desalocação a devolve. O tempo de vida de uma variável é o período em que ela permanece vinculada a uma posição específica de memória.","id":"question-c47","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Comparar escopo estático, escopo dinâmico, ambiente de referenciamento e constantes nomeadas."],"options":["Basta memorizar o nome do conceito; contexto, objetivos e consequências não alteram sua análise.","Alocação obtém uma célula de memória e desalocação a devolve. O tempo de vida de uma variável é o período em que ela permanece vinculada a uma posição específica de memória.","O conceito pode ser relacionado aos objetivos e a exemplos da aula.","Uma explicação adequada distingue o conceito de ideias próximas."],"prompt":"Sobre “Alocação, desalocação e tempo de vida”, é errado afirmar que:"},{"correctIndex":1,"feedback":"Categorias de variáveis por tempo de vida: As categorias apresentadas são estáticas, dinâmicas da pilha, dinâmicas de heap e dinâmicas de heap implícito. Elas diferem pelo momento e mecanismo de alocação, flexibilidade, eficiência, suporte à recursão e possibilidade de detecção de erros. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.; Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5.","id":"question-c48","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5."],"options":["Misturar conceitos diferentes e observar apenas a conclusão final.","Definir Categorias de variáveis por tempo de vida, aplicá-lo a um exemplo e justificar a análise: As categorias apresentadas são estáticas, dinâmicas da pilha, dinâmicas de heap e dinâmicas de heap implícito. Elas diferem pelo momento e mecanismo de alocação, flexibilidade, eficiência, suporte à recursão e possibilidade de detecção de erros.","Escolher um exemplo sem explicar sua relação com o conceito.","Memorizar a definição e dispensar exemplos ou justificativas."],"prompt":"Qual procedimento demonstra melhor a compreensão de “Categorias de variáveis por tempo de vida”?"},{"correctIndex":2,"feedback":"No cenário apresentado, o conceito central é Escopo estático, escopo dinâmico e ambiente de referenciamento. Escopo é a faixa de sentenças em que uma variável é visível. No escopo estático, a declaração é encontrada pela organização textual e pelos ancestrais estáticos; no dinâmico, pela sequência de chamadas. O ambiente de referenciamento reúne as variáveis visíveis em uma sentença.","id":"question-c49","objectiveLabels":["Comparar escopo estático, escopo dinâmico, ambiente de referenciamento e constantes nomeadas.","Relacionar decisões de projeto, evolução histórica, descrição formal, processamento e comportamento de variáveis entre os capítulos 1 a 5."],"options":["Razões para estudar conceitos de LP","Critérios de Avaliação de Linguagem","Escopo estático, escopo dinâmico e ambiente de referenciamento","Legibilidade e ortogonalidade"],"prompt":"Durante uma explicação fundamentada, qual conceito corresponde a esta descrição: “Escopo é a faixa de sentenças em que uma variável é visível. No escopo estático, a declaração é encontrada pela organização textual e pelos ancestrais estáticos; no dinâmico, pela sequência de chamadas. O ambiente de referenciamento reúne as variáveis visíveis em uma sentença.”?"},{"correctIndex":3,"feedback":"Escopo, tempo de vida e constantes nomeadas: Escopo e tempo de vida são conceitos diferentes: um trata visibilidade textual e o outro vinculação à memória. Uma constante nomeada recebe uma única vinculação de valor e favorece legibilidade, modificabilidade e parametrização. Objetivos relacionados: Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.; Comparar escopo estático, escopo dinâmico, ambiente de referenciamento e constantes nomeadas.","id":"question-c50","objectiveLabels":["Caracterizar nomes, variáveis, vinculações, alocação e tempo de vida.","Comparar escopo estático, escopo dinâmico, ambiente de referenciamento e constantes nomeadas."],"options":["O estudo dos conceitos de linguagens de programação amplia a expressão de ideias, fundamenta a escolha de linguagens, facilita a aprendizagem de novas linguagens, melhora o uso das já conhecidas e ajuda a compreender a implementação.","Legibilidade, capacidade de escrita, confiabilidade e custo são critérios usados para comparar a adequação de uma linguagem, sem pressupor que uma única linguagem maximize todos eles.","Legibilidade envolve a facilidade de compreender programas. A ortogonalidade contribui para ela ao permitir que componentes básicos sejam combinados com poucas restrições e exceções.","Escopo e tempo de vida são conceitos diferentes: um trata visibilidade textual e o outro vinculação à memória. Uma constante nomeada recebe uma única vinculação de valor e favorece legibilidade, modificabilidade e parametrização."],"prompt":"Qual opção descreve melhor “Escopo, tempo de vida e constantes nomeadas”?"}],"title":"Revisão da Primeira Prova Bimestral — Quiz 4 de 4"}</script>
+  <script>
+    const data = JSON.parse(document.getElementById("quiz-data").textContent);
+    const form = document.getElementById("quiz");
+    data.questions.forEach((question, questionIndex) => {
+      const section = document.createElement("section");
+      section.className = "question";
+      const title = document.createElement("h2");
+      title.textContent = `${questionIndex + 1}. ${question.prompt}`;
+      section.appendChild(title);
+      const objective = document.createElement("p");
+      objective.className = "objective";
+      objective.textContent = `Objetivos: ${question.objectiveLabels.join(" ")}`;
+      section.appendChild(objective);
+      question.options.forEach((option, optionIndex) => {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = question.id;
+        input.value = optionIndex;
+        label.append(input, ` ${option}`);
+        section.appendChild(label);
+      });
+      const feedback = document.createElement("p");
+      feedback.className = "feedback";
+      feedback.hidden = true;
+      feedback.dataset.for = question.id;
+      section.appendChild(feedback);
+      form.appendChild(section);
+    });
+    document.getElementById("check").addEventListener("click", () => {
+      let score = 0;
+      data.questions.forEach((question) => {
+        const selected = form.querySelector(`input[name="${question.id}"]:checked`);
+        const correct = selected && Number(selected.value) === question.correctIndex;
+        if (correct) score += 1;
+        form.querySelectorAll(`input[name="${question.id}"]`).forEach(
+          (input, optionIndex) => {
+            const label = input.closest("label");
+            label.classList.toggle(
+              "answer-correct",
+              optionIndex === question.correctIndex
+            );
+            label.classList.toggle(
+              "answer-incorrect",
+              input.checked && optionIndex !== question.correctIndex
+            );
+          }
+        );
+        const feedback = form.querySelector(`[data-for="${question.id}"]`);
+        feedback.hidden = false;
+        feedback.textContent = `${correct ? "Correto." : "Revise."} ${question.feedback}`;
+      });
+      document.getElementById("score").textContent =
+        `Resultado: ${score} de ${data.questions.length}.`;
+    });
+  </script>
+</body>
+</html>

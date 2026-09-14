@@ -1,0 +1,31 @@
+1
+00:00:00,000 --> 00:01:34,243
+Neste quadro: Razões para estudar conceitos de LP, Critérios de Avaliação de Linguagem, Legibilidade e ortogonalidade
+
+2
+00:01:34,243 --> 00:03:08,486
+Neste quadro: Categorias de Linguagens, Trade-offs no Projeto de Linguagens, Métodos de Implementação e Ambientes de Programação
+
+3
+00:03:08,486 --> 00:04:42,730
+Neste quadro: Lisp, Scheme e programação funcional, Linguagens orientadas por domínio, Linguagens dinâmicas: APL e SNOBOL
+
+4
+00:04:42,730 --> 00:06:16,973
+Neste quadro: Sentença, linguagem, lexema e token, Reconhecedores e Geradores, FNB e Gramáticas Livres de Contexto
+
+5
+00:06:16,973 --> 00:07:51,216
+Neste quadro: FNB Extendida, Semântica Estática e Semântica Dinâmica, Análise Léxica e Análise Sintática
+
+6
+00:07:51,216 --> 00:09:25,460
+Neste quadro: Análise Sintática Descendente, Lookahead, Recursão à esquerda
+
+7
+00:09:25,460 --> 00:10:59,703
+Neste quadro: Endereço e apelidos, Vinculação e tempo de vinculação, Vinculação estática e dinâmica
+
+8
+00:10:59,703 --> 00:12:33,946
+Neste quadro: Escopo, tempo de vida e constantes nomeadas
