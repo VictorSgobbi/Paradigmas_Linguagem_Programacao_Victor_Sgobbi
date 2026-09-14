@@ -72,6 +72,15 @@ o registro escrito de cada estação está no README daquela pasta.
 
 ---
 
+## Material de apoio
+
+Slides, roteiros e exercícios distribuídos pelo professor estão arquivados em
+[`conteudo-das-aulas/`](conteudo-das-aulas/README.md), organizados por aula (00 a 05).
+É material de consulta, de autoria do professor (David Garrett) — as resoluções
+são o que está nas pastas `aula-NN/` desta raiz.
+
+---
+
 ## Como este repositório é organizado
 
 ```
@@ -82,7 +91,8 @@ o registro escrito de cada estação está no README daquela pasta.
 │   └── src/           ← código-fonte da atividade
 ├── aula-02/README.md
 ├── aula-03/README.md
-└── aula-04/README.md
+├── aula-04/README.md
+└── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
 ```
 
 Convenções adotadas:
