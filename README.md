@@ -1,8 +1,8 @@
 # Paradigmas de Linguagens de Programação
 
-Caderno de atividades da disciplina, mantido aula a aula. Cada entrega vive em
-uma pasta própria (`aula-NN/`) com um README autocontido: enunciado, raciocínio,
-respostas e, quando existe, o código-fonte.
+Aqui eu vou guardando as atividades da disciplina, uma pasta por aula. Cada
+`aula-NN/` tem o próprio README com o enunciado, o caminho que eu segui pra
+resolver, as respostas e o código, quando a atividade tem código.
 
 👤 **Aluno:** Victor Hugo Pacchioni Sgobbi  
 🎓 **RA:** 24000732-2
@@ -13,40 +13,50 @@ respostas e, quando existe, o código-fonte.
 
 ### [`aula-00`](aula-00/README.md) · "Olá, mundo!" e tabuada em Python
 
-Primeiro contato com a linguagem sorteada para o grupo (**Python**): rodar um
-`hello world` em compilador online, evoluí-lo para imprimir a tabuada de um
-número lido do teclado e pesquisar uma vaga real, a faixa salarial praticada e
-os paradigmas que a linguagem suporta.
+Primeira atividade da matéria. A linguagem que caiu pro meu grupo foi
+**Python**, então comecei rodando o `hello world` de sempre num compilador
+online e depois fui mexendo nele até ler um número do teclado e imprimir a
+tabuada desse número. A parte que eu achei mais legal nem foi o código: também
+tinha que caçar uma vaga de verdade pedindo Python, ver a faixa salarial que
+estavam pagando e descobrir quais paradigmas a linguagem suporta.
 
 📁 Código em [`aula-00/src/`](aula-00/src) — [`ola_mundo.py`](aula-00/src/ola_mundo.py) e [`tabuada.py`](aula-00/src/tabuada.py)
 
 ### [`aula-02`](aula-02/README.md) · Evolução das principais linguagens
 
-10 questões autorais sobre o capítulo 2 de Sebesta, com enunciado e resposta
-lado a lado: genealogia das linguagens, Plankalkül, Fortran, Lisp, ALGOL 60,
-COBOL, Ada, a chegada dos objetos, as linguagens de script e um estudo de caso
-sobre escolha de linguagem por domínio.
+Lista de exercícios em cima do capítulo 2 do Sebesta, que é o de história das
+linguagens. Respondi 10 questões, cada uma com o enunciado e a minha resposta
+logo embaixo. Passa por Plankalkül, Fortran, Lisp, ALGOL 60, COBOL, Ada, a
+chegada da orientação a objetos e as linguagens de script, e fecha com um estudo
+de caso de escolher linguagem de acordo com o domínio. A ideia que mais ficou
+comigo foi essa: linguagem nova não mata linguagem velha, elas convivem.
 
 ### [`aula-03`](aula-03/README.md) · Derivação de código a partir da gramática
 
-Estudo da gramática formal do CPython (notação **PEG**, adotada a partir do
-Python 3.9): seleção das regras de produção relevantes e derivação passo a passo
-da instrução `total = 2 + 3 * 4`, amarrando os conceitos de terminal, não
-terminal, produção e derivação.
+Nessa a gente tinha que pegar a gramática formal de uma linguagem de verdade e
+derivar um trecho de código a partir dela. Fiquei com Python e fui atrás da
+gramática do CPython, que usa notação **PEG** desde a versão 3.9. Separei só as
+produções que eu ia precisar e derivei `total = 2 + 3 * 4` passo a passo, até
+sobrar só terminal. Dá um trabalho danado, mas foi o que fez cair a ficha sobre
+o que é terminal, não terminal, produção e derivação.
 
 ### [`aula-04`](aula-04/README.md) · Análise léxica e sintática em Java
 
-Aula exploratória de 60 minutos dividida em 5 estações, em Java: separar lexemas
-de tokens, reconhecer palavras reservadas, ler os diagnósticos do compilador
-diante de erros propositais e acompanhar o rastreamento de um parser descendente
-recursivo e de um parser ascendente com tabela `ACTION`/`GOTO`.
+Aula exploratória no laboratório: 60 minutos divididos em 5 estações, tudo em
+Java. Em cada estação eu rodava um programa curto que deixa à vista uma etapa
+que normalmente fica escondida dentro do compilador — separar lexema de token,
+reconhecer palavra reservada, quebrar o código de propósito só pra ver do que o
+compilador reclama, e acompanhar o rastro de um parser descendente recursivo e
+de um ascendente com tabela `ACTION`/`GOTO`. No README da pasta eu registrei o
+que saiu em cada estação.
 
 ### [`aula-05`](aula-05/README.md) · Nomes, vinculações e escopo
 
-7 exercícios não consecutivos da lista do capítulo 5 de Sebesta: sensibilidade a
-maiúsculas, apelidos e o atributo endereço, vinculação estática × dinâmica,
-tipagem dinâmica, variáveis dinâmicas da pilha, ocultação de nomes e a distinção
-entre escopo e tempo de vida.
+Lista do capítulo 5, sobre nomes, vinculações e escopo. A lista tem 27
+exercícios; eu resolvi 7 espalhados, pra não ficar tudo em cima do mesmo
+assunto: case sensitive, apelidos, vinculação estática × dinâmica, tipagem
+dinâmica, variável dinâmica da pilha, ocultação de nomes e a diferença entre
+escopo e tempo de vida — essa última era justamente a que eu mais confundia.
 
 ---
 
