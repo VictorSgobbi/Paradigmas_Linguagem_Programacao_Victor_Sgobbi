@@ -59,6 +59,19 @@ o registro escrito de cada estação está no README daquela pasta.
 
 ---
 
+## Material do professor
+
+Slides, roteiros, exercícios e o material de revisão da Prova 01 são de autoria
+do professor **Munif** e estão arquivados aqui apenas para consulta — em
+`conteudo-das-aulas/` (aulas 00 a 05) e em
+`revisao-para-prova/material-do-professor/`. As resoluções das atividades e o
+[guia de estudo](revisao-para-prova/meu-guia-de-estudo/guia-de-estudo-prova01.pdf)
+são produção minha.
+
+🔗 **Material do professor:** <https://drive.google.com/drive/folders/1Inoq29Xxfmu5fDI6JOY9EFvjdDZxQtwt?usp=sharing>
+
+---
+
 ## Como este repositório é organizado
 
 ```
