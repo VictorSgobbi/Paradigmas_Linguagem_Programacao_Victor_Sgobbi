@@ -79,6 +79,12 @@ Slides, roteiros e exercícios distribuídos pelo professor estão arquivados em
 É material de consulta, de autoria do professor (David Garrett) — as resoluções
 são o que está nas pastas `aula-NN/` desta raiz.
 
+Para a **Prova 01** (capítulos 1 a 5 de Sebesta) há uma pasta separada,
+[`revisao-para-prova/`](revisao-para-prova/README.md): de um lado o material de
+revisão do professor, de outro o [guia de estudo de 19
+páginas](revisao-para-prova/meu-guia-de-estudo/guia-de-estudo-prova01.pdf) que eu
+escrevi para me preparar.
+
 ---
 
 ## Como este repositório é organizado
@@ -92,7 +98,8 @@ são o que está nas pastas `aula-NN/` desta raiz.
 ├── aula-02/README.md
 ├── aula-03/README.md
 ├── aula-04/README.md
-└── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
+├── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
+└── revisao-para-prova/    ← material da Prova 01 + meu guia de estudo
 ```
 
 Convenções adotadas:
