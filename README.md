@@ -41,6 +41,13 @@ de tokens, reconhecer palavras reservadas, ler os diagnósticos do compilador
 diante de erros propositais e acompanhar o rastreamento de um parser descendente
 recursivo e de um parser ascendente com tabela `ACTION`/`GOTO`.
 
+### [`aula-05`](aula-05/README.md) · Nomes, vinculações e escopo
+
+7 exercícios não consecutivos da lista do capítulo 5 de Sebesta: sensibilidade a
+maiúsculas, apelidos e o atributo endereço, vinculação estática × dinâmica,
+tipagem dinâmica, variáveis dinâmicas da pilha, ocultação de nomes e a distinção
+entre escopo e tempo de vida.
+
 ---
 
 ## Rodando o código
@@ -76,6 +83,7 @@ o registro escrito de cada estação está no README daquela pasta.
 ├── aula-02/README.md
 ├── aula-03/README.md
 ├── aula-04/README.md
+├── aula-05/README.md
 ├── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
 └── revisao-para-prova/    ← material da Prova 01 + meu guia de estudo
 ```
