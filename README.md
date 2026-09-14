@@ -50,22 +50,6 @@ entre escopo e tempo de vida.
 
 ---
 
-## Rodando o código
-
-Só a aula 00 tem código executável versionado. Com Python 3 instalado:
-
-```bash
-python aula-00/src/ola_mundo.py
-python aula-00/src/tabuada.py
-```
-
-Sem instalar nada, cole o conteúdo dos arquivos em <https://onecompiler.com/python>.
-
-Os programas da aula 04 foram escritos e executados no laboratório da faculdade;
-o registro escrito de cada estação está no README daquela pasta.
-
----
-
 ## Material do professor
 
 🔗 **Munif** — <https://drive.google.com/drive/folders/1Inoq29Xxfmu5fDI6JOY9EFvjdDZxQtwt?usp=sharing>
