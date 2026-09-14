@@ -4,21 +4,8 @@ Caderno de atividades da disciplina, mantido aula a aula. Cada entrega vive em
 uma pasta própria (`aula-NN/`) com um README autocontido: enunciado, raciocínio,
 respostas e, quando existe, o código-fonte.
 
-| | |
-|---|---|
-| **Aluno** | Victor Hugo Pacchioni Sgobbi |
-| **RA** | 24000732-2 |
-| **Bibliografia base** | SEBESTA, R. W. *Conceitos de Linguagens de Programação*, 11. ed. |
-| **Linguagens usadas até aqui** | Python, Java |
-
----
-
-## Progresso
-
-- [x] **Aula 00** — Primeiro programa e pesquisa de mercado
-- [x] **Aula 02** — Evolução das linguagens (cap. 2)
-- [x] **Aula 03** — Derivação a partir da gramática
-- [x] **Aula 04** — Análise léxica e sintática (cap. 4)
+👤 **Aluno:** Victor Hugo Pacchioni Sgobbi  
+🎓 **RA:** 24000732-2
 
 ---
 
@@ -72,21 +59,6 @@ o registro escrito de cada estação está no README daquela pasta.
 
 ---
 
-## Material de apoio
-
-Slides, roteiros e exercícios distribuídos pelo professor estão arquivados em
-[`conteudo-das-aulas/`](conteudo-das-aulas/README.md), organizados por aula (00 a 05).
-É material de consulta, de autoria do professor (David Garrett) — as resoluções
-são o que está nas pastas `aula-NN/` desta raiz.
-
-Para a **Prova 01** (capítulos 1 a 5 de Sebesta) há uma pasta separada,
-[`revisao-para-prova/`](revisao-para-prova/README.md): de um lado o material de
-revisão do professor, de outro o [guia de estudo de 19
-páginas](revisao-para-prova/meu-guia-de-estudo/guia-de-estudo-prova01.pdf) que eu
-escrevi para me preparar.
-
----
-
 ## Como este repositório é organizado
 
 ```
@@ -101,10 +73,3 @@ escrevi para me preparar.
 ├── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
 └── revisao-para-prova/    ← material da Prova 01 + meu guia de estudo
 ```
-
-Convenções adotadas:
-
-- uma pasta por aula, nomeada `aula-NN` com dois dígitos;
-- todo README de atividade começa com um link de volta para este índice;
-- código-fonte sempre em `src/` dentro da pasta da aula;
-- um commit por atividade, prefixado pela aula a que se refere.
