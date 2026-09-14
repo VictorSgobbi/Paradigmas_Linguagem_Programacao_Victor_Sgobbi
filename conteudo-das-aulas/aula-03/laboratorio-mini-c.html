@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratório Mini-C — sintaxe e semântica ao vivo</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08111f; --panel: #101d30; --panel-2: #15263d; --line: #2a4260;
+      --text: #edf5ff; --muted: #a9bdd3; --cyan: #5ee7f7; --yellow: #ffd166;
+      --green: #72e6a1; --red: #ff7b89; --purple: #c6a0ff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at top, #132743, var(--bg) 42rem); color: var(--text); }
+    button, select, textarea { font: inherit; }
+    button, select { min-height: 2.65rem; }
+    header { max-width: 1500px; margin: auto; padding: 2.5rem 1.25rem 1rem; }
+    header p { color: var(--muted); max-width: 76ch; line-height: 1.55; }
+    h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 3rem); }
+    h1 span, h2 span { color: var(--cyan); }
+    main { max-width: 1500px; margin: auto; padding: 1rem 1.25rem 3rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; margin-bottom: 1rem; }
+    button, select { border: 1px solid var(--line); border-radius: .55rem; padding: .55rem .85rem; background: var(--panel-2); color: var(--text); }
+    button { cursor: pointer; font-weight: 700; }
+    button:hover, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #5ee7f755; border-color: var(--cyan); }
+    .primary { background: var(--cyan); color: #06202a; border-color: transparent; }
+    .status { margin-left: auto; padding: .55rem .8rem; border-radius: 2rem; font-weight: 800; }
+    .status.ok { color: var(--green); background: #123927; }
+    .status.error { color: var(--red); background: #421c28; }
+    .workspace { display: grid; grid-template-columns: minmax(20rem, 1fr) minmax(28rem, 1.55fr); gap: 1rem; align-items: start; }
+    .card { background: #101d30ee; border: 1px solid var(--line); border-radius: .9rem; overflow: hidden; box-shadow: 0 12px 35px #0005; }
+    .card h2 { font-size: 1rem; margin: 0; padding: .8rem 1rem; background: #182a43; border-bottom: 1px solid var(--line); }
+    textarea { display: block; width: 100%; min-height: 31rem; resize: vertical; border: 0; outline: 0; padding: 1rem; background: #091321; color: #f5f8fc; line-height: 1.65; tab-size: 2; font-family: "SFMono-Regular", Consolas, monospace; font-size: 1rem; }
+    .grammar { padding: .85rem 1rem; color: var(--muted); font-size: .82rem; line-height: 1.55; border-top: 1px solid var(--line); }
+    code, pre { font-family: "SFMono-Regular", Consolas, monospace; }
+    .grammar code { color: var(--yellow); }
+    .results { display: grid; gap: 1rem; }
+    .tabs { display: flex; overflow-x: auto; background: #0d1929; border-bottom: 1px solid var(--line); }
+    .tab { border: 0; border-radius: 0; background: transparent; color: var(--muted); white-space: nowrap; }
+    .tab[aria-selected="true"] { color: var(--cyan); box-shadow: inset 0 -3px var(--cyan); }
+    .tabpanel { padding: 1rem; min-height: 20rem; overflow: auto; }
+    .tabpanel[hidden] { display: none; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: .55rem .65rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--cyan); position: sticky; top: 0; background: var(--panel); }
+    td code { color: var(--yellow); }
+    .tree, .tree ul { list-style: none; padding-left: 1.2rem; position: relative; }
+    .tree { padding-left: 0; margin: 0; }
+    .tree ul::before { content: ""; position: absolute; left: .35rem; top: 0; bottom: .8rem; border-left: 1px solid #4e6b8c; }
+    .tree li { position: relative; margin: .35rem 0; }
+    .tree li::before { content: ""; position: absolute; left: -0.85rem; top: .75rem; width: .65rem; border-top: 1px solid #4e6b8c; }
+    .tree > li::before { display: none; }
+    .node { display: inline-block; padding: .28rem .48rem; border: 1px solid var(--line); border-radius: .35rem; background: #172a44; }
+    .node strong { color: var(--purple); }
+    .node em { color: var(--yellow); font-style: normal; }
+    .diagnostic { padding: .8rem; margin: .6rem 0; border-left: 4px solid; border-radius: .35rem; background: #0c1727; line-height: 1.45; }
+    .diagnostic.error { border-color: var(--red); }
+    .diagnostic.success { border-color: var(--green); }
+    .diagnostic.info { border-color: var(--cyan); }
+    .diagnostic strong { display: block; }
+    .error strong { color: var(--red); } .success strong { color: var(--green); } .info strong { color: var(--cyan); }
+    .phase { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+    .challenge { padding: 1rem; }
+    .challenge p { color: var(--muted); line-height: 1.5; }
+    .challenge strong { color: var(--yellow); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    footer { max-width: 1500px; margin: auto; padding: 0 1.25rem 2rem; color: var(--muted); font-size: .83rem; }
+    @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } .status { margin-left: 0; } textarea { min-height: 22rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Laboratório <span>Mini-C</span></h1>
+    <p>Digite um programa e observe o caminho do texto até o significado: análise léxica, árvore sintática e atributos semânticos. O analisador roda inteiramente neste arquivo, sem internet e sem executar o código digitado.</p>
+  </header>
+  <main>
+    <div class="toolbar">
+      <label for="example">Experimento:</label>
+      <select id="example">
+        <option value="valid">Programa válido</option>
+        <option value="syntax">Erro sintático</option>
+        <option value="semantic">Erros semânticos</option>
+        <option value="precedence">Precedência de operadores</option>
+      </select>
+      <button id="load" type="button">Carregar</button>
+      <button id="analyze" class="primary" type="button">Analisar agora</button>
+      <span id="status" class="status" aria-live="polite">Aguardando código</span>
+    </div>
+    <div class="workspace">
+      <section class="card" aria-labelledby="editor-title">
+        <h2 id="editor-title"><span>1.</span> Código-fonte</h2>
+        <label class="sr-only" for="source">Programa em Mini-C</label>
+        <textarea id="source" spellcheck="false" autocomplete="off" aria-describedby="grammar"></textarea>
+        <div id="grammar" class="grammar">
+          Tipos: <code>int</code>, <code>real</code>, <code>bool</code> · declaração: <code>int total = 2;</code> · atribuição: <code>total = total + 1;</code> · saída: <code>print(total);</code><br>
+          Operadores: <code>+ - * / &lt; &gt; == !=</code> · booleanos: <code>true false</code> · comentários: <code>// texto</code>
+        </div>
+      </section>
+      <div class="results">
+        <section class="card" aria-labelledby="analysis-title">
+          <h2 id="analysis-title"><span>2.</span> Análise ao vivo</h2>
+          <div class="tabs" role="tablist" aria-label="Etapas da análise">
+            <button class="tab" role="tab" id="tab-tokens" aria-controls="tokens" aria-selected="true">Lexemas e tokens</button>
+            <button class="tab" role="tab" id="tab-tree" aria-controls="tree" aria-selected="false">Árvore sintática</button>
+            <button class="tab" role="tab" id="tab-symbols" aria-controls="symbols" aria-selected="false">Tabela semântica</button>
+            <button class="tab" role="tab" id="tab-messages" aria-controls="messages" aria-selected="false">Mensagens <span id="badge"></span></button>
+          </div>
+          <div id="tokens" class="tabpanel" role="tabpanel" aria-labelledby="tab-tokens"></div>
+          <div id="tree" class="tabpanel" role="tabpanel" aria-labelledby="tab-tree" hidden></div>
+          <div id="symbols" class="tabpanel" role="tabpanel" aria-labelledby="tab-symbols" hidden></div>
+          <div id="messages" class="tabpanel" role="tabpanel" aria-labelledby="tab-messages" hidden></div>
+        </section>
+        <aside class="card challenge">
+          <h2>Roteiro de investigação</h2>
+          <p><strong>1.</strong> Remova um ponto e vírgula. Qual etapa deixa de produzir resultado?</p>
+          <p><strong>2.</strong> Faça <code>int idade = true;</code>. A forma é aceita? E o significado?</p>
+          <p><strong>3.</strong> Compare <code>2 + 3 * 4</code> com <code>(2 + 3) * 4</code> na árvore.</p>
+          <p><strong>4.</strong> Use uma variável antes de declará-la. Qual atributo permite detectar o problema?</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer>Material autoral para a aula002 · objetivos obj01, obj02, obj03 e obj04 · linguagem didática Mini-C, não um compilador C completo.</footer>
+  <script>
+    "use strict";
+    const examples = {
+      valid: `// Um programa bem formado e bem tipado
+int quantidade = 4;
+real preco = 12.50;
+real total = quantidade * preco;
+bool promocao = total > 40;
+print(total);
+print(promocao);`,
+      syntax: `// Há dois erros de forma
+int quantidade = 4
+real total = quantidade * ;
+print(total);`,
+      semantic: `// A sintaxe está correta, mas os significados não
+int tentativas = true;
+real media = nota + 2.5;
+bool aprovado = media;
+print(resultado);`,
+      precedence: `int sem_parenteses = 2 + 3 * 4;
+int com_parenteses = (2 + 3) * 4;
+bool comparacao = sem_parenteses == 14;
+print(com_parenteses);`
+    };
+    const source = document.getElementById("source");
+    const tokenNames = { TYPE: "palavra-chave de tipo", IDENT: "identificador", NUMBER: "literal numérico", BOOL: "literal booleano", PRINT: "palavra-chave", ASSIGN: "atribuição", PLUS: "adição", MINUS: "subtração", STAR: "multiplicação", SLASH: "divisão", LT: "comparação", GT: "comparação", EQ: "igualdade", NE: "diferença", LPAREN: "abre parêntese", RPAREN: "fecha parêntese", SEMI: "terminador", EOF: "fim do arquivo" };
+    let timer;
+
+    function tokenize(text) {
+      const tokens = [], errors = [];
+      const rules = [
+        ["SPACE", /^[ \t\r]+/], ["NEWLINE", /^\n/], ["COMMENT", /^\/\/[^\n]*/],
+        ["NUMBER", /^\d+(?:\.\d+)?\b/], ["EQ", /^==/], ["NE", /^!=/],
+        ["ASSIGN", /^=/], ["PLUS", /^\+/], ["MINUS", /^-/], ["STAR", /^\*/], ["SLASH", /^\//],
+        ["LT", /^</], ["GT", /^>/], ["LPAREN", /^\(/], ["RPAREN", /^\)/], ["SEMI", /^;/],
+        ["WORD", /^[A-Za-z_][A-Za-z0-9_]*/]
+      ];
+      let rest = text, line = 1, column = 1;
+      while (rest.length) {
+        let found = false;
+        for (const [kind, regex] of rules) {
+          const match = rest.match(regex);
+          if (!match) continue;
+          found = true;
+          const lexeme = match[0], startLine = line, startColumn = column;
+          rest = rest.slice(lexeme.length);
+          if (kind === "NEWLINE") { line += 1; column = 1; }
+          else { column += lexeme.length; }
+          if (!["SPACE", "NEWLINE", "COMMENT"].includes(kind)) {
+            let type = kind;
+            if (kind === "WORD") type = ["int", "real", "bool"].includes(lexeme) ? "TYPE" : lexeme === "print" ? "PRINT" : ["true", "false"].includes(lexeme) ? "BOOL" : "IDENT";
+            tokens.push({ type, lexeme, line: startLine, column: startColumn });
+          }
+          break;
+        }
+        if (!found) {
+          errors.push({ phase: "léxica", line, column, message: `Caractere não reconhecido: “${rest[0]}”.` });
+          rest = rest.slice(1); column += 1;
+        }
+      }
+      tokens.push({ type: "EOF", lexeme: "", line, column });
+      return { tokens, errors };
+    }
+
+    class Parser {
+      constructor(tokens) { this.tokens = tokens; this.current = 0; this.errors = []; }
+      peek() { return this.tokens[this.current]; }
+      previous() { return this.tokens[this.current - 1]; }
+      check(type) { return this.peek().type === type; }
+      match(...types) { if (types.some(t => this.check(t))) { this.current += 1; return true; } return false; }
+      consume(type, message) { if (this.check(type)) { this.current += 1; return this.previous(); } throw this.fail(this.peek(), message); }
+      fail(token, message) { return { phase: "sintática", line: token.line, column: token.column, message }; }
+      synchronize() { while (!this.check("EOF")) { if (this.previous()?.type === "SEMI") return; if (["TYPE", "IDENT", "PRINT"].includes(this.peek().type)) return; this.current += 1; } }
+      parse() {
+        const body = [];
+        while (!this.check("EOF")) {
+          try { body.push(this.statement()); }
+          catch (error) { this.errors.push(error); this.synchronize(); }
+        }
+        return { ast: { kind: "Programa", children: body }, errors: this.errors };
+      }
+      statement() {
+        if (this.match("TYPE")) return this.declaration(this.previous());
+        if (this.match("PRINT")) return this.printStatement(this.previous());
+        if (this.match("IDENT")) return this.assignment(this.previous());
+        throw this.fail(this.peek(), "Esperava uma declaração, atribuição ou comando print.");
+      }
+      declaration(typeToken) {
+        const name = this.consume("IDENT", "Esperava o nome da variável após o tipo.");
+        let value = null;
+        if (this.match("ASSIGN")) value = this.expression();
+        this.consume("SEMI", "Esperava ‘;’ ao final da declaração.");
+        return { kind: "Declaração", value: `${typeToken.lexeme} ${name.lexeme}`, declaredType: typeToken.lexeme, name: name.lexeme, line: typeToken.line, children: value ? [value] : [] };
+      }
+      assignment(name) {
+        this.consume("ASSIGN", "Esperava ‘=’ após o nome da variável.");
+        const value = this.expression();
+        this.consume("SEMI", "Esperava ‘;’ ao final da atribuição.");
+        return { kind: "Atribuição", value: name.lexeme, name: name.lexeme, line: name.line, children: [value] };
+      }
+      printStatement(token) {
+        this.consume("LPAREN", "Esperava ‘(’ após print.");
+        const value = this.expression();
+        this.consume("RPAREN", "Esperava ‘)’ após a expressão.");
+        this.consume("SEMI", "Esperava ‘;’ após print(...).");
+        return { kind: "Saída", value: "print", line: token.line, children: [value] };
+      }
+      expression() { return this.equality(); }
+      equality() { let node = this.comparison(); while (this.match("EQ", "NE")) node = this.binary(this.previous(), node, this.comparison()); return node; }
+      comparison() { let node = this.term(); while (this.match("LT", "GT")) node = this.binary(this.previous(), node, this.term()); return node; }
+      term() { let node = this.factor(); while (this.match("PLUS", "MINUS")) node = this.binary(this.previous(), node, this.factor()); return node; }
+      factor() { let node = this.unary(); while (this.match("STAR", "SLASH")) node = this.binary(this.previous(), node, this.unary()); return node; }
+      unary() { if (this.match("MINUS")) { const op = this.previous(); return { kind: "Unário", value: op.lexeme, line: op.line, children: [this.unary()] }; } return this.primary(); }
+      primary() {
+        if (this.match("NUMBER")) return { kind: "Literal", value: this.previous().lexeme, literalType: this.previous().lexeme.includes(".") ? "real" : "int", line: this.previous().line, children: [] };
+        if (this.match("BOOL")) return { kind: "Literal", value: this.previous().lexeme, literalType: "bool", line: this.previous().line, children: [] };
+        if (this.match("IDENT")) return { kind: "Variável", value: this.previous().lexeme, name: this.previous().lexeme, line: this.previous().line, children: [] };
+        if (this.match("LPAREN")) { const node = this.expression(); this.consume("RPAREN", "Esperava ‘)’ para fechar a expressão."); return { kind: "Grupo", value: "( )", line: node.line, children: [node] }; }
+        throw this.fail(this.peek(), "Esperava um número, booleano, variável ou expressão entre parênteses.");
+      }
+      binary(operator, left, right) { return { kind: "Operação", value: operator.lexeme, operator: operator.type, line: operator.line, children: [left, right] }; }
+    }
+
+    function semanticAnalysis(ast) {
+      const symbols = new Map(), errors = [], annotations = [];
+      const compatible = (expected, actual) => expected === actual || (expected === "real" && actual === "int");
+      function infer(node) {
+        let type = "erro";
+        if (node.kind === "Literal") type = node.literalType;
+        else if (node.kind === "Variável") {
+          if (!symbols.has(node.name)) errors.push({ phase: "semântica", line: node.line, column: 1, message: `Variável “${node.name}” usada antes de ser declarada.` });
+          else { type = symbols.get(node.name).type; symbols.get(node.name).uses += 1; }
+        } else if (node.kind === "Grupo" || node.kind === "Unário") {
+          type = infer(node.children[0]);
+          if (node.kind === "Unário" && !["int", "real", "erro"].includes(type)) errors.push({ phase: "semântica", line: node.line, column: 1, message: `O operador - exige número, mas recebeu ${type}.` });
+        } else if (node.kind === "Operação") {
+          const left = infer(node.children[0]), right = infer(node.children[1]);
+          if (["PLUS", "MINUS", "STAR", "SLASH"].includes(node.operator)) {
+            if (![left, right].every(t => ["int", "real", "erro"].includes(t))) errors.push({ phase: "semântica", line: node.line, column: 1, message: `O operador ${node.value} exige operandos numéricos; recebeu ${left} e ${right}.` });
+            else type = left === "real" || right === "real" || node.operator === "SLASH" ? "real" : "int";
+          } else {
+            if (left !== "erro" && right !== "erro" && !(compatible(left, right) || compatible(right, left))) errors.push({ phase: "semântica", line: node.line, column: 1, message: `Não é possível comparar ${left} com ${right}.` });
+            type = "bool";
+          }
+        }
+        node.inferredType = type;
+        annotations.push({ construct: `${node.kind}${node.value ? ` “${node.value}”` : ""}`, attribute: "tipo sintetizado", value: type, line: node.line });
+        return type;
+      }
+      for (const statement of ast.children) {
+        if (statement.kind === "Declaração") {
+          if (symbols.has(statement.name)) errors.push({ phase: "semântica", line: statement.line, column: 1, message: `Variável “${statement.name}” já foi declarada.` });
+          const actual = statement.children.length ? infer(statement.children[0]) : statement.declaredType;
+          if (actual !== "erro" && !compatible(statement.declaredType, actual)) errors.push({ phase: "semântica", line: statement.line, column: 1, message: `“${statement.name}” espera ${statement.declaredType}, mas a expressão produz ${actual}.` });
+          if (!symbols.has(statement.name)) symbols.set(statement.name, { name: statement.name, type: statement.declaredType, line: statement.line, uses: 0 });
+        } else if (statement.kind === "Atribuição") {
+          const actual = infer(statement.children[0]);
+          if (!symbols.has(statement.name)) errors.push({ phase: "semântica", line: statement.line, column: 1, message: `Atribuição para “${statement.name}”, que não foi declarada.` });
+          else if (actual !== "erro" && !compatible(symbols.get(statement.name).type, actual)) errors.push({ phase: "semântica", line: statement.line, column: 1, message: `“${statement.name}” espera ${symbols.get(statement.name).type}, mas a expressão produz ${actual}.` });
+        } else if (statement.kind === "Saída") infer(statement.children[0]);
+      }
+      return { symbols: [...symbols.values()], annotations, errors };
+    }
+
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]); }
+    function renderTokens(tokens) {
+      const visible = tokens.filter(t => t.type !== "EOF");
+      document.getElementById("tokens").innerHTML = visible.length ? `<table><thead><tr><th>#</th><th>Lexema</th><th>Token</th><th>Posição</th></tr></thead><tbody>${visible.map((t, i) => `<tr><td>${i + 1}</td><td><code>${escapeHtml(t.lexeme)}</code></td><td>${escapeHtml(tokenNames[t.type] || t.type)}</td><td>L${t.line}:C${t.column}</td></tr>`).join("")}</tbody></table>` : "<p>Nenhum token encontrado.</p>";
+    }
+    function treeHtml(node) {
+      const type = node.inferredType ? ` <em>: ${escapeHtml(node.inferredType)}</em>` : "";
+      const value = node.value ? ` — ${escapeHtml(node.value)}` : "";
+      return `<li><span class="node"><strong>${escapeHtml(node.kind)}</strong>${value}${type}</span>${node.children?.length ? `<ul>${node.children.map(treeHtml).join("")}</ul>` : ""}</li>`;
+    }
+    function renderTree(ast, syntaxErrors) {
+      document.getElementById("tree").innerHTML = syntaxErrors.length ? "<p>A árvore completa não pode ser construída enquanto houver erros sintáticos. Corrija a forma do programa e tente novamente.</p>" : `<ul class="tree">${treeHtml(ast)}</ul>`;
+    }
+    function renderSymbols(result, blocked) {
+      const target = document.getElementById("symbols");
+      if (blocked) { target.innerHTML = "<p>A análise semântica começa somente depois que a estrutura sintática é reconhecida.</p>"; return; }
+      const symbolTable = result.symbols.length ? `<h3>Tabela de símbolos</h3><table><thead><tr><th>Nome</th><th>Tipo declarado</th><th>Declaração</th><th>Usos</th></tr></thead><tbody>${result.symbols.map(s => `<tr><td><code>${escapeHtml(s.name)}</code></td><td>${s.type}</td><td>linha ${s.line}</td><td>${s.uses}</td></tr>`).join("")}</tbody></table>` : "<p>Nenhuma variável declarada.</p>";
+      const attrs = result.annotations.length ? `<h3>Atributos calculados</h3><table><thead><tr><th>Construção</th><th>Atributo</th><th>Valor</th></tr></thead><tbody>${result.annotations.map(a => `<tr><td>${escapeHtml(a.construct)}</td><td>${a.attribute}</td><td><code>${a.value}</code></td></tr>`).join("")}</tbody></table>` : "";
+      target.innerHTML = symbolTable + attrs;
+    }
+    function renderMessages(errors) {
+      const target = document.getElementById("messages");
+      target.innerHTML = errors.length ? errors.map(error => `<div class="diagnostic error"><span class="phase">Análise ${error.phase}</span><strong>Linha ${error.line}, coluna ${error.column}</strong>${escapeHtml(error.message)}</div>`).join("") : `<div class="diagnostic success"><span class="phase">Resultado</span><strong>Programa aceito</strong>A forma está de acordo com a gramática e os atributos de tipo são consistentes.</div><div class="diagnostic info"><span class="phase">Pergunta</span><strong>Aceito significa correto?</strong>Não necessariamente: este laboratório verifica apenas algumas regras estáticas, não a intenção do programador.</div>`;
+      document.getElementById("badge").textContent = errors.length ? `(${errors.length})` : "(0)";
+    }
+    function analyze() {
+      const lexical = tokenize(source.value);
+      const parser = new Parser(lexical.tokens);
+      const parsed = parser.parse();
+      const syntaxErrors = [...lexical.errors, ...parsed.errors];
+      const semantic = syntaxErrors.length ? { symbols: [], annotations: [], errors: [] } : semanticAnalysis(parsed.ast);
+      const errors = [...syntaxErrors, ...semantic.errors];
+      renderTokens(lexical.tokens); renderTree(parsed.ast, syntaxErrors); renderSymbols(semantic, syntaxErrors.length); renderMessages(errors);
+      const status = document.getElementById("status");
+      status.textContent = errors.length ? `${errors.length} problema${errors.length === 1 ? "" : "s"}` : "Programa aceito";
+      status.className = `status ${errors.length ? "error" : "ok"}`;
+    }
+    function loadExample() { source.value = examples[document.getElementById("example").value]; analyze(); source.focus(); }
+    document.getElementById("load").addEventListener("click", loadExample);
+    document.getElementById("analyze").addEventListener("click", analyze);
+    source.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(analyze, 220); });
+    source.addEventListener("keydown", event => { if (event.key === "Tab") { event.preventDefault(); const start = source.selectionStart; source.setRangeText("  ", start, source.selectionEnd, "end"); source.dispatchEvent(new Event("input")); } });
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(item => item.setAttribute("aria-selected", String(item === tab)));
+      document.querySelectorAll(".tabpanel").forEach(panel => { panel.hidden = panel.id !== tab.getAttribute("aria-controls"); });
+    }));
+    source.value = examples.valid;
+    analyze();
+  </script>
+</body>
+</html>

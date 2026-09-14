@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Roteiro contínuo de aula exploratória prática sobre análise léxica e sintática em Java.">
+  <title>Roteiro de aula exploratória prática — Capítulo 4</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #0b2545;
+      --blue: #2e74b5;
+      --dark-blue: #1f4d78;
+      --gray: #5e6670;
+      --light-blue: #e8eef5;
+      --light-gray: #f4f6f9;
+      --pale-gold: #fff8e8;
+      --gold: #8a6100;
+      --line: #c9d3df;
+      --white: #ffffff;
+      --shadow: 0 14px 38px rgba(11, 37, 69, 0.10);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 1rem;
+    }
+
+    body {
+      margin: 0;
+      color: var(--navy);
+      background: #edf2f7;
+      font-family: Calibri, "Segoe UI", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 28px auto 52px;
+      background: var(--white);
+      border: 1px solid rgba(201, 211, 223, 0.9);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 12px clamp(22px, 5vw, 64px);
+      color: var(--white);
+      background: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .topbar span:last-child {
+      color: #cbd9e7;
+      text-align: right;
+    }
+
+    main { padding: 0 clamp(22px, 5vw, 64px) 56px; }
+
+    .hero {
+      padding: 52px 0 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker,
+    .station-label {
+      margin: 0 0 6px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { line-height: 1.14; }
+
+    h1 {
+      max-width: 850px;
+      margin: 0;
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      letter-spacing: -0.045em;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      color: var(--gray);
+      font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    }
+
+    .time-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 30px 0 24px;
+    }
+
+    .time-item {
+      padding: 12px 8px 10px;
+      border-bottom: 4px solid var(--gold);
+      border-radius: 9px 9px 3px 3px;
+      background: var(--pale-gold);
+      text-align: center;
+    }
+
+    .time-item strong {
+      display: block;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    .time-item span {
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .identity {
+      display: grid;
+      grid-template-columns: 90px 1fr 76px minmax(130px, 0.65fr);
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .identity label,
+    .identity input {
+      min-height: 48px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .identity label {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      color: var(--dark-blue);
+      background: var(--light-blue);
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .identity input {
+      min-width: 0;
+      padding: 0 14px;
+      color: var(--navy);
+      background: var(--white);
+      font: inherit;
+      outline: none;
+    }
+
+    .identity input:focus { box-shadow: inset 0 0 0 3px rgba(46, 116, 181, 0.24); }
+    .identity > :nth-last-child(-n+4) { border-bottom: 0; }
+    .identity > :nth-child(4n) { border-right: 0; }
+
+    .section,
+    .station {
+      padding: 42px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    h2 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-size: clamp(1.65rem, 3.4vw, 2.4rem);
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      margin: 28px 0 10px;
+      color: var(--blue);
+      font-size: 1.22rem;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .lead {
+      max-width: 880px;
+      color: var(--gray);
+      font-size: 1.08rem;
+    }
+
+    .callout {
+      margin: 20px 0;
+      padding: 15px 18px;
+      border-left: 7px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      background: var(--light-blue);
+    }
+
+    .callout.gold {
+      border-left-color: var(--gold);
+      background: var(--pale-gold);
+    }
+
+    .callout.gray {
+      border-left-color: var(--dark-blue);
+      background: var(--light-gray);
+    }
+
+    .callout strong { color: var(--dark-blue); }
+    .callout.gold strong { color: var(--gold); }
+
+    .steps {
+      margin: 12px 0 22px;
+      padding-left: 1.55rem;
+    }
+
+    .steps li { padding: 4px 0 6px 5px; }
+    .steps li::marker { color: var(--blue); font-weight: 800; }
+
+    .metadata {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      margin: 20px 0 28px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .metadata dt,
+    .metadata dd {
+      margin: 0;
+      padding: 10px 13px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metadata dt {
+      color: var(--dark-blue);
+      background: var(--light-blue);
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .metadata dd { font-weight: 650; overflow-wrap: anywhere; }
+    .metadata > :nth-last-child(-n+2) { border-bottom: 0; }
+
+    pre {
+      margin: 18px 0 22px;
+      padding: 17px 19px;
+      overflow-x: auto;
+      border: 1px solid #d5dae0;
+      border-radius: 10px;
+      color: var(--navy);
+      background: #f7f8fa;
+      font: 0.9rem/1.55 Consolas, "Courier New", monospace;
+      white-space: pre-wrap;
+    }
+
+    code { font-family: Consolas, "Courier New", monospace; }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 22px;
+    }
+
+    .check-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      align-items: start;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+    }
+
+    .check-row:hover { background: var(--light-gray); }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      margin: 3px 0 0;
+      accent-color: var(--blue);
+    }
+
+    .station-heading {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .station-number {
+      display: grid;
+      width: 64px;
+      height: 64px;
+      place-items: center;
+      border-radius: 18px;
+      color: var(--white);
+      background: var(--blue);
+      font-size: 1.65rem;
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(46, 116, 181, 0.25);
+    }
+
+    .station-heading .station-label { margin-top: 2px; }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 24px 0 0;
+    }
+
+    .quick-nav a {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--dark-blue);
+      background: var(--white);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .quick-nav a:hover,
+    .quick-nav a:focus-visible {
+      border-color: var(--blue);
+      background: var(--light-blue);
+      outline: none;
+    }
+
+    .final-note {
+      margin-top: 32px;
+      color: var(--gray);
+      font-size: 0.88rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      body { font-size: 16px; }
+      .page-shell { width: 100%; margin: 0; border: 0; border-radius: 0; }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .topbar span:last-child { text-align: left; }
+      .time-strip { grid-template-columns: repeat(2, 1fr); }
+      .identity { grid-template-columns: 82px 1fr; }
+      .identity > * { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; }
+      .identity > :last-child { border-bottom: 0 !important; }
+      .metadata { grid-template-columns: 105px minmax(0, 1fr); }
+      .station-heading { grid-template-columns: 52px 1fr; gap: 12px; }
+      .station-number { width: 48px; height: 48px; border-radius: 13px; font-size: 1.25rem; }
+    }
+
+    @media print {
+      body { background: var(--white); font-size: 11pt; }
+      .page-shell { width: 100%; margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+      .topbar { color: var(--navy); background: var(--white); border-bottom: 1px solid var(--line); }
+      .topbar span:last-child { color: var(--gray); }
+      main { padding-bottom: 0; }
+      .quick-nav { display: none; }
+      .section, .station { break-before: auto; break-after: auto; }
+      .callout, pre, .metadata, .check-row { break-inside: avoid; }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <span>Aula exploratória prática · Capítulo 4</span>
+      <span>Paradigmas de Linguagens de Programação</span>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <p class="kicker">Paradigmas de Linguagens de Programação</p>
+        <h1>Roteiro de aula exploratória prática</h1>
+        <p class="subtitle">Capítulo 4 — Análise léxica e análise sintática em Java</p>
+
+        <div class="time-strip" aria-label="Distribuição dos 60 minutos">
+          <div class="time-item"><strong>5 min</strong><span>Preparar</span></div>
+          <div class="time-item"><strong>17 min</strong><span>Léxico</span></div>
+          <div class="time-item"><strong>9 min</strong><span>Sintaxe</span></div>
+          <div class="time-item"><strong>23 min</strong><span>Parsers</span></div>
+          <div class="time-item"><strong>6 min</strong><span>Entregar</span></div>
+        </div>
+
+        <div class="identity" aria-label="Identificação do aluno">
+          <label for="nome">Nome</label><input id="nome" name="nome" autocomplete="name">
+          <label for="ra">RA</label><input id="ra" name="ra">
+          <label for="turma">Turma</label><input id="turma" name="turma">
+          <label for="data">Data</label><input id="data" name="data" type="date">
+        </div>
+
+        <nav class="quick-nav" aria-label="Navegação rápida">
+          <a href="#preparacao">Preparação</a>
+          <a href="#estacao-1">Estação 1</a>
+          <a href="#estacao-2">Estação 2</a>
+          <a href="#estacao-3">Estação 3</a>
+          <a href="#estacao-4">Estação 4</a>
+          <a href="#estacao-5">Estação 5</a>
+          <a href="#conferencia">Conferência</a>
+        </nav>
+      </section>
+
+      <section class="section" id="preparacao">
+        <p class="station-label">Preparação · 5 minutos</p>
+        <h2>Sua missão em 60 minutos</h2>
+        <p class="lead">Nesta atividade, você vai <strong>copiar, executar, alterar e registrar</strong> pequenos programas Java. Os programas tornam visíveis etapas que normalmente ficam escondidas dentro de um compilador.</p>
+
+        <aside class="callout gold">
+          <strong>Regra principal:</strong> não pesquise durante a atividade. Siga cada passo na ordem, altere somente o que for solicitado e use a saída do programa para observar o conceito.
+        </aside>
+
+        <h3>Antes de começar</h3>
+        <ol class="steps">
+          <li><strong>Abra o compilador.</strong> Use um ambiente com Java 17 ou superior, no computador ou no navegador.</li>
+          <li><strong>Localize os arquivos.</strong> Os cinco programas estão separados em pastas numeradas de 01 a 05.</li>
+          <li><strong>Preencha sua identificação.</strong> Em cada programa, substitua os valores de <code>ALUNO</code> e <code>RA</code> antes da primeira execução.</li>
+          <li><strong>Mantenha a tela visível.</strong> Ao tirar um print, mostre simultaneamente uma parte do código e o console.</li>
+          <li><strong>Não avance com erro inesperado.</strong> Na Estação 3 os erros são propositais; nas demais, confira se você copiou o programa inteiro.</li>
+        </ol>
+
+        <h3>Evidências da atividade</h3>
+        <aside class="callout">
+          <strong>Ao final:</strong> você terá seis prints. O nome exato de cada arquivo aparece na estação correspondente e será conferido na seção final.
+        </aside>
+      </section>
+
+      <section class="station" id="estacao-1">
+        <div class="station-heading">
+          <div class="station-number" aria-hidden="true">1</div>
+          <div>
+            <p class="station-label">Estação 1</p>
+            <h2>De caracteres a lexemas e tokens</h2>
+            <p class="lead">Observe como uma linha de código-fonte é dividida em unidades com significado.</p>
+          </div>
+        </div>
+
+        <dl class="metadata">
+          <dt>Tempo</dt><dd>9 minutos</dd>
+          <dt>Arquivo</dt><dd><code>01-lexemas-tokens/Main.java</code></dd>
+          <dt>Evidência</dt><dd><code>01_tokens.png</code></dd>
+        </dl>
+
+        <h3>O que fazer</h3>
+        <ol class="steps">
+          <li>Abra o arquivo da Estação 1 e copie todo o conteúdo para o compilador.</li>
+          <li>Substitua <code>ALUNO</code> e <code>RA</code> pelos seus dados. Use somente letras e números dentro das aspas.</li>
+          <li>Execute o programa sem alterar a entrada inicial.</li>
+          <li>Leia no console as colunas <code>LEXEMA</code> e <code>TOKEN</code>. Localize um identificador, um operador, um número inteiro e o ponto e vírgula.</li>
+          <li>Troque somente o valor da constante <code>ENTRADA</code> por uma atribuição personalizada.</li>
+        </ol>
+
+        <pre><code>static final String ENTRADA = "total_mg = valor + 25;";
+// Troque mg por suas iniciais e 25 pelos dois últimos dígitos do RA.</code></pre>
+
+        <ol class="steps" start="6">
+          <li>Execute novamente e confira se o novo identificador e o novo número aparecem na lista.</li>
+          <li>Tire o print com a linha <code>ENTRADA</code>, sua identificação e o console visíveis.</li>
+          <li>Salve a imagem como <code>01_tokens.png</code>.</li>
+        </ol>
+
+        <h3>Observe</h3>
+        <aside class="callout">
+          <strong>Conclusão guiada:</strong> o texto <code>total_mg</code> é um lexema. <code>IDENTIFICADOR</code> é a categoria, ou token, atribuída a esse lexema.
+        </aside>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Encontrei pelo menos dois lexemas classificados como <code>IDENTIFICADOR</code>.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Percebi que lexema e token não são a mesma coisa.</span></label>
+        </div>
+      </section>
+
+      <section class="station" id="estacao-2">
+        <div class="station-heading">
+          <div class="station-number" aria-hidden="true">2</div>
+          <div>
+            <p class="station-label">Estação 2</p>
+            <h2>O que o analisador léxico reconhece</h2>
+            <p class="lead">Compare espaços, comentários, palavras reservadas, identificadores e caracteres inválidos.</p>
+          </div>
+        </div>
+
+        <dl class="metadata">
+          <dt>Tempo</dt><dd>8 minutos</dd>
+          <dt>Arquivo</dt><dd><code>02-classes-reservadas/Main.java</code></dd>
+          <dt>Evidência</dt><dd><code>02_lexico.png</code></dd>
+        </dl>
+
+        <h3>O que fazer</h3>
+        <ol class="steps">
+          <li>Abra o arquivo da Estação 2, preencha <code>ALUNO</code> e <code>RA</code> e execute o programa.</li>
+          <li>Compare os testes A e B. A segunda entrada possui mais espaços e um comentário, mas os tokens essenciais devem permanecer equivalentes.</li>
+          <li>No teste C, localize <code>int</code> e <code>while</code>. Depois localize <code>inteiro</code> e <code>intValor</code>.</li>
+          <li>Substitua o valor de <code>IDENTIFICADOR_PERSONALIZADO</code> por um nome formado com suas iniciais.</li>
+        </ol>
+
+        <pre><code>static final String IDENTIFICADOR_PERSONALIZADO = "nota_mg";
+// Exemplo: nota_mg. Não use espaços nem acentos.</code></pre>
+
+        <ol class="steps" start="5">
+          <li>Execute novamente. Confira que <code>int</code> e <code>while</code> aparecem como <code>PALAVRA_RESERVADA</code> e que seu nome aparece como <code>IDENTIFICADOR</code>.</li>
+          <li>No teste D, localize a mensagem <code>ERRO_LEXICO</code> referente ao caractere <code>#</code>.</li>
+          <li>Tire um print mostrando seu identificador personalizado e a parte do console com <code>PALAVRA_RESERVADA</code>, <code>IDENTIFICADOR</code> e <code>ERRO_LEXICO</code>.</li>
+          <li>Salve a imagem como <code>02_lexico.png</code>.</li>
+        </ol>
+
+        <h3>Observe</h3>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Espaços adicionais não criaram novos tokens.</span></label>
+          <label class="check-row"><input type="checkbox"><span>O comentário foi ignorado pelo analisador.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>int</code> e <code>inteiro</code> foram classificados de maneira diferente.</span></label>
+          <label class="check-row"><input type="checkbox"><span>O caractere <code>#</code> foi rejeitado pelo analisador didático.</span></label>
+        </div>
+        <aside class="callout gray">
+          <strong>Ligação com os slides:</strong> o programa agrupa letras e dígitos em classes de caracteres e consulta uma tabela para decidir se um nome é uma palavra reservada.
+        </aside>
+      </section>
+
+      <section class="station" id="estacao-3">
+        <div class="station-heading">
+          <div class="station-number" aria-hidden="true">3</div>
+          <div>
+            <p class="station-label">Estação 3</p>
+            <h2>Quando o compilador encontra erros</h2>
+            <p class="lead">Use os diagnósticos do compilador para reparar um programa Java curto.</p>
+          </div>
+        </div>
+
+        <dl class="metadata">
+          <dt>Tempo</dt><dd>9 minutos</dd>
+          <dt>Arquivo</dt><dd><code>03-diagnosticos/Main.java</code></dd>
+          <dt>Evidências</dt><dd><code>03_erro_compilador.png</code> e <code>04_programa_corrigido.png</code></dd>
+        </dl>
+
+        <aside class="callout gold">
+          <strong>Importante:</strong> este arquivo foi entregue com erros propositais. Nesta estação, falhar na primeira compilação significa que o experimento está funcionando.
+        </aside>
+
+        <h3>Primeira compilação</h3>
+        <ol class="steps">
+          <li>Abra o arquivo, preencha <code>ALUNO</code> e <code>RA</code> e tente compilar sem corrigir as linhas marcadas.</li>
+          <li>Leia a primeira mensagem de erro. Procure o número da linha e algum símbolo esperado pelo compilador.</li>
+          <li>Sem corrigir ainda, tire um print com o código e a mensagem do compilador.</li>
+          <li>Salve a imagem como <code>03_erro_compilador.png</code>.</li>
+        </ol>
+
+        <h3>Reparo mecânico</h3>
+        <ol class="steps">
+          <li>Procure as linhas marcadas com <code>CORRIGIR 1</code>, <code>CORRIGIR 2</code> e <code>CORRIGIR 3</code>.</li>
+          <li>Acrescente o ponto e vírgula que está faltando.</li>
+          <li>Feche corretamente o parêntese da condição.</li>
+          <li>Feche corretamente o texto entre aspas.</li>
+          <li>Compile novamente. Se surgir outro erro, volte para a linha indicada e confira somente os sinais de pontuação.</li>
+          <li>Quando o programa executar, tire um novo print e salve como <code>04_programa_corrigido.png</code>.</li>
+        </ol>
+
+        <h3>Classificação rápida</h3>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Texto entre aspas não finalizado: problema na formação de um elemento léxico.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Ponto e vírgula ou parêntese ausente: estrutura sintática incompleta.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Depois das correções, o programa foi aceito e executado.</span></label>
+        </div>
+      </section>
+
+      <section class="station" id="estacao-4">
+        <div class="station-heading">
+          <div class="station-number" aria-hidden="true">4</div>
+          <div>
+            <p class="station-label">Estação 4</p>
+            <h2>Parser descendente recursivo</h2>
+            <p class="lead">Acompanhe as chamadas de <code>expr</code>, <code>term</code> e <code>factor</code> enquanto o parser percorre a expressão.</p>
+          </div>
+        </div>
+
+        <dl class="metadata">
+          <dt>Tempo</dt><dd>14 minutos</dd>
+          <dt>Arquivo</dt><dd><code>04-parser-descendente/Main.java</code></dd>
+          <dt>Evidência</dt><dd><code>05_descendente.png</code></dd>
+        </dl>
+
+        <h3>Execução válida</h3>
+        <ol class="steps">
+          <li>Abra o arquivo, preencha <code>ALUNO</code> e <code>RA</code> e execute a entrada original <code>2 + 3 * 4</code>.</li>
+          <li>No console, acompanhe as mensagens <code>ENTRANDO</code> e <code>SAINDO</code> para <code>expr</code>, <code>term</code> e <code>factor</code>.</li>
+          <li>Observe que a multiplicação é tratada dentro de <code>term</code> antes de <code>expr</code> terminar a soma.</li>
+          <li>Troque a constante <code>ENTRADA</code> pela expressão personalizada abaixo.</li>
+        </ol>
+
+        <pre><code>static final String ENTRADA = "(5 + 3) * 4";
+// Troque 5 pelo último dígito não nulo do seu RA.</code></pre>
+
+        <ol class="steps" start="5">
+          <li>Execute e procure a mensagem <code>ENTRADA ACEITA</code>.</li>
+          <li>Tire um print mostrando a expressão, sua identificação e parte do rastreamento.</li>
+          <li>Salve a imagem como <code>05_descendente.png</code>.</li>
+        </ol>
+
+        <h3>Execução inválida e observação extra</h3>
+        <ol class="steps">
+          <li>Troque temporariamente a entrada por <code>2 + * 4</code> e execute. Localize o token que estava no <em>lookahead</em> quando ocorreu o erro.</li>
+          <li>Restaure uma entrada válida, altere <code>DEMONSTRAR_RECURSAO_ESQUERDA</code> para <code>true</code> e execute uma vez. Depois volte o valor para <code>false</code>.</li>
+        </ol>
+
+        <aside class="callout">
+          <strong>Conclusão guiada:</strong> o parser descendente começa pela regra mais geral e chama métodos associados aos não terminais. Uma regra que chama a si mesma antes de consumir entrada pode repetir indefinidamente.
+        </aside>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Percebi que os parênteses e o <em>lookahead</em> orientaram o reconhecimento.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Observei por que a recursão à esquerda é inadequada para esse parser.</span></label>
+        </div>
+      </section>
+
+      <section class="station" id="estacao-5">
+        <div class="station-heading">
+          <div class="station-number" aria-hidden="true">5</div>
+          <div>
+            <p class="station-label">Estação 5</p>
+            <h2>Parser ascendente: deslocar e reduzir</h2>
+            <p class="lead">Observe a entrada ser transferida para uma pilha e reduzida até o símbolo inicial.</p>
+          </div>
+        </div>
+
+        <dl class="metadata">
+          <dt>Tempo</dt><dd>9 minutos</dd>
+          <dt>Arquivo</dt><dd><code>05-parser-ascendente/Main.java</code></dd>
+          <dt>Evidência</dt><dd><code>06_ascendente.png</code></dd>
+        </dl>
+
+        <h3>O que fazer</h3>
+        <ol class="steps">
+          <li>Abra o arquivo, preencha <code>ALUNO</code> e <code>RA</code> e execute a entrada <code>id+id*id</code>.</li>
+          <li>Leia as três colunas: <code>PILHA</code>, <code>ENTRADA</code> e <code>ACAO</code>.</li>
+          <li>Localize uma ação <code>SHIFT</code>. Nela, um item da entrada é deslocado para a pilha.</li>
+          <li>Localize uma ação <code>REDUCE</code>. Nela, uma sequência reconhecida é substituída pelo lado esquerdo de uma regra.</li>
+          <li>Localize a ação <code>ACCEPT</code> e tire um print com a identificação e as três colunas visíveis.</li>
+          <li>Salve a imagem como <code>06_ascendente.png</code>.</li>
+          <li>Troque a entrada por <code>id+*id</code>, execute novamente e localize a ação <code>ERROR</code>. Não é necessário tirar outro print.</li>
+        </ol>
+
+        <pre><code>static final String ENTRADA_VALIDA = "id+id*id";
+static final String ENTRADA_INVALIDA = "id+*id";</code></pre>
+
+        <h3>Compare as duas direções</h3>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Descendente: parte de <code>expr</code> e avança em direção aos componentes menores.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Ascendente: parte dos tokens e realiza reduções até chegar ao símbolo inicial.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>SHIFT</code> movimenta a entrada; <code>REDUCE</code> aplica uma regra; <code>ACCEPT</code> conclui a análise.</span></label>
+        </div>
+        <aside class="callout gray">
+          <strong>Limite do experimento:</strong> a tabela LR já está pronta dentro do programa. Nesta aula você observa seu uso, mas não precisa construir as partes <code>ACTION</code> e <code>GOTO</code>.
+        </aside>
+      </section>
+
+      <section class="section" id="conferencia">
+        <p class="station-label">Conferência final · 6 minutos</p>
+        <h2>Organize as evidências antes de entregar</h2>
+        <p class="lead">Use os minutos finais para conferir nomes, conteúdo visível e ordem dos arquivos.</p>
+
+        <h3>Checklist dos arquivos</h3>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span><code>01_tokens.png</code> mostra a entrada personalizada e a lista de tokens.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>02_lexico.png</code> mostra palavra reservada, identificador e erro léxico.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>03_erro_compilador.png</code> mostra uma tentativa que falhou.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>04_programa_corrigido.png</code> mostra a execução depois dos reparos.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>05_descendente.png</code> mostra <code>expr</code>, <code>term</code> ou <code>factor</code> no rastreamento.</span></label>
+          <label class="check-row"><input type="checkbox"><span><code>06_ascendente.png</code> mostra <code>PILHA</code>, <code>ENTRADA</code>, <code>ACAO</code> e <code>ACCEPT</code>.</span></label>
+        </div>
+
+        <h3>O que cada print deve mostrar</h3>
+        <div class="checklist">
+          <label class="check-row"><input type="checkbox"><span>Minha identificação está visível no código ou no console.</span></label>
+          <label class="check-row"><input type="checkbox"><span>A alteração pedida na estação está visível.</span></label>
+          <label class="check-row"><input type="checkbox"><span>O console ou a mensagem do compilador pode ser lido.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Não cortei o trecho principal da evidência.</span></label>
+          <label class="check-row"><input type="checkbox"><span>Usei exatamente os nomes de arquivo indicados.</span></label>
+        </div>
+
+        <aside class="callout gold">
+          <strong>Entrega:</strong> cole os seis prints na folha de evidências fornecida pelo professor. Não escreva uma explicação longa: marque apenas as verificações solicitadas e entregue no formato definido para a turma.
+        </aside>
+
+        <h3>O que você acabou de observar</h3>
+        <aside class="callout">
+          <strong>Síntese:</strong> o analisador léxico transforma caracteres em tokens; o parser verifica a gramática. Rastreamentos e pilhas mostram que as abordagens descendente e ascendente percorrem a estrutura em direções diferentes.
+        </aside>
+        <aside class="callout gray">
+          <strong>Referência conceitual:</strong> SEBESTA, Robert W. <em>Conceitos de Linguagens de Programação</em>. 11. ed. Capítulo 4: análise léxica e sintática.
+        </aside>
+
+        <p class="final-note">Roteiro contínuo — sem divisão em páginas ou quebras obrigatórias entre as estações.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
