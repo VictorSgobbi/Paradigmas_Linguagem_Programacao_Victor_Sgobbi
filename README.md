@@ -50,14 +50,6 @@ compilador reclama, e acompanhar o rastro de um parser descendente recursivo e
 de um ascendente com tabela `ACTION`/`GOTO`. No README da pasta eu registrei o
 que saiu em cada estação.
 
-### [`aula-05`](aula-05/README.md) · Nomes, vinculações e escopo
-
-Lista do capítulo 5, sobre nomes, vinculações e escopo. A lista tem 27
-exercícios; eu resolvi 7 espalhados, pra não ficar tudo em cima do mesmo
-assunto: case sensitive, apelidos, vinculação estática × dinâmica, tipagem
-dinâmica, variável dinâmica da pilha, ocultação de nomes e a diferença entre
-escopo e tempo de vida — essa última era justamente a que eu mais confundia.
-
 ---
 
 ## Material do professor
@@ -79,7 +71,6 @@ escopo e tempo de vida — essa última era justamente a que eu mais confundia.
 ├── aula-02/README.md
 ├── aula-03/README.md
 ├── aula-04/README.md
-├── aula-05/README.md
 ├── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
 └── revisao-para-prova/    ← material da Prova 01 + meu guia de estudo
 ```
