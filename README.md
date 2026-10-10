@@ -50,6 +50,38 @@ compilador reclama, e acompanhar o rastro de um parser descendente recursivo e
 de um ascendente com tabela `ACTION`/`GOTO`. No README da pasta eu registrei o
 que saiu em cada estação.
 
+### [`aula-06`](aula-06/README.md) · Tipos, verificação de tipos e representação numérica
+
+Exercício com seis linguagens — JavaScript, Python, Go, Java, Rust e C — em que
+eu tinha que dizer o que cada programa imprime e em que momento o erro aparece:
+na compilação, na execução ou nunca. O contraste que mais me chamou atenção foi
+entre Rust e C: o mesmo problema é barrado pelo compilador em um e passa batido
+no outro, devolvendo um número que parece válido.
+
+### [`aula-07`](aula-07/README.md) · Expressões, atribuições e estruturas de controle
+
+Resumo escrito da aula, passando por precedência e associatividade, sobrecarga
+de operadores, conversões implícitas e explícitas, curto-circuito, atribuição
+dentro de condição e as estruturas de seleção e repetição. A ideia que sobrou é
+que saber a sintaxe não basta: é o jeito como cada linguagem avalia a expressão
+que gera a maior parte dos erros.
+
+### [`aula-08`](aula-08/README.md) · Subprogramas: passagem de parâmetros e escopo
+
+Seis programas em Python, Java, C e Rust, cada um para eu dizer a saída e
+identificar o conceito por trás: parâmetro padrão mutável, passagem por valor,
+fechamento, variável local estática, passagem por posse e ambiente de
+referenciamento. Todos caem no mesmo ponto — o que vale é a que o nome está
+vinculado, e não o que o código aparenta fazer.
+
+### [`aula-10`](aula-10/README.md) · Laboratório de concorrência
+
+Laboratório em cima do capítulo 13, com sete práticas em Java, Python, Go, Rust
+e JavaScript: condição de corrida, correção por sincronização, impasse, troca de
+mensagens no lugar de memória compartilhada e o laço de eventos. Na prática 1,
+duas threads que deveriam somar 2.000.000 fecharam em 1.129.299, 1.920.411 e
+1.898.195 — a corrida aparecendo na prática.
+
 ---
 
 ## Material do professor
@@ -71,6 +103,10 @@ que saiu em cada estação.
 ├── aula-02/README.md
 ├── aula-03/README.md
 ├── aula-04/README.md
+├── aula-06/
+├── aula-07/
+├── aula-08/
+├── aula-10/
 ├── conteudo-das-aulas/    ← slides, roteiros e exercícios do professor
 └── revisao-para-prova/    ← material da Prova 01 + meu guia de estudo
 ```
