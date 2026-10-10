@@ -1,0 +1,288 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aula 10 - Laboratório de Concorrência</title><style>body{font:16px/1.55 Arial,system-ui,sans-serif;background:#f4f6f8;color:#1c2936;margin:0}.wrap{max-width:940px;margin:0 auto;padding:28px 20px 80px}header,section{background:white;border:1px solid #d8e0e7;border-radius:12px;padding:22px;margin-bottom:18px}header{border-top:6px solid #0c817b}h1{font-size:27px;margin:0 0 8px}h2{font-size:20px;color:#135b60;margin:0 0 16px}label{font-weight:700;display:block;margin:15px 0 5px}input,textarea{box-sizing:border-box;font:inherit;width:100%;padding:10px;border:1px solid #c6d1dc;border-radius:7px;background:#fff;color:#1c2936}textarea{resize:vertical;min-height:65px}pre{white-space:pre-wrap;background:#f0f4f7;border-radius:8px;padding:13px;font:13px/1.5 Consolas,monospace;overflow:auto}.note{font-size:14px;color:#526370}.toolbox{position:sticky;top:0;background:#f4f6f8ed;padding:8px 0;display:flex;gap:10px;z-index:10;flex-wrap:wrap}button{background:#146b6b;border:0;color:white;border-radius:7px;padding:10px 14px;cursor:pointer}button.secondary{background:#4c6070}details{margin-top:10px}summary{cursor:pointer;font-weight:bold;color:#146b6b}details pre{max-height:340px;overflow:auto}.evidence{background:#e9f5f1;padding:12px;border-left:4px solid #13816d;border-radius:5px;margin:15px 0}.warning{background:#fff6dd;padding:10px;border-radius:7px}.upload{margin-top:10px}.upload img{max-width:100%;max-height:400px;display:block;margin:10px 0;border:1px solid #ccc}@media print{body{background:white}.wrap{padding:0;max-width:none}.toolbox,.upload input,.upload label,details{display:none!important}header,section{break-inside:avoid;border:0;border-bottom:1px solid #bbb;border-radius:0;padding:15px 0}textarea,input{border:0;padding:2px 0;resize:none;overflow:visible}pre,.evidence{print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><main class="wrap">
+<div class="toolbox"><button onclick="window.print()">Salvar em PDF / Imprimir</button><button class="secondary" onclick="baixar()">Baixar HTML com alterações</button></div>
+<header><h1>Laboratório de Concorrência — Aula 10</h1><p>Paradigmas de Linguagens de Programação · Engenharia de Software</p><label>Aluno</label><input value="Victor Hugo Pacchioni Sgobbi"><label>RA</label><input value="240007322"><label>Turma</label><input value="C"><p class="warning">Relatório elaborado com base na Aula 10 e no laboratório do professor. Resultados marcados como “execução real” foram obtidos neste ambiente, não no OneCompiler. Complete os testes pendentes e anexe prints próprios antes da entrega.</p></header>
+<section><h2>Preparação — Concorrência em cinco minutos</h2>
+<label>0.1 Qual a diferença entre sincronização de cooperação e de competição? Dê exemplos do dia a dia.</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Na cooperação, uma atividade depende da outra, como esperar alguém preparar o almoço para servir a comida. Na competição, duas pessoas querem utilizar o mesmo recurso, como dois moradores querendo usar a máquina de lavar ao mesmo tempo.</textarea>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 1 — A condição de corrida (Java)</h2>
+<label>Previsão: quanto duas threads incrementando 1.000.000 vezes cada devem imprimir?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O valor esperado é 2.000.000, porque cada thread soma um milhão ao mesmo contador.</textarea>
+<label>1.1 Os resultados foram iguais? Por que mudam?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Não. As três execuções deram valores menores e diferentes. Isso acontece porque as threads acessam o mesmo contador sem proteção e algumas atualizações se perdem.</textarea>
+<label>1.2 Como uma atualização se perde?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Por exemplo, a thread A lê 10 e a thread B também lê 10. As duas somam 1. A grava 11 e B também grava 11. O contador aumentou só uma vez, mesmo com dois incrementos.</textarea>
+<label>1.3 O que acontece com n = 1000 e qual o risco?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Com menos repetições, a corrida pode não aparecer em algumas execuções. O risco é o sistema passar nos testes e falhar depois quando houver muitos acessos ao mesmo tempo. Preciso registrar as duas execuções com n = 1000 para confirmar o resultado no meu teste.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execuções reais de Java neste ambiente (n = 1.000.000):
+1ª: esperado 2000000, obtido 1129299
+2ª: esperado 2000000, obtido 1920411
+3ª: esperado 2000000, obtido 1898195
+Execuções com n = 1000: pendentes.</pre></div>
+<details><summary>Ver código original da prática (java)</summary><pre>// Prática 1 - Condição de corrida (Sebesta 13.2.1, p. 547-549)
+// Cole em https://onecompiler.com/java
+public class Main {
+    static int contador = 0;                 // variável COMPARTILHADA
+
+    public static void main(String[] args) throws InterruptedException {
+        int n = 1_000_000;                   // repetições de cada thread
+        Runnable incrementa = () -&gt; {
+            for (int i = 0; i &lt; n; i++) contador++;
+        };
+        Thread t1 = new Thread(incrementa);
+        Thread t2 = new Thread(incrementa);
+        t1.start(); t2.start();              // as duas executam ao mesmo tempo
+        t1.join();  t2.join();               // espera as duas terminarem
+        System.out.println(&quot;esperado: &quot; + 2 * n);
+        System.out.println(&quot;obtido:   &quot; + contador);
+    }
+}</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 2 — Todas as respostas possíveis (Python)</h2>
+<label>2.1 Quantas ordens e resultados? Quantas dão 8?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">São 20 intercalações possíveis, com quatro resultados diferentes: 4, 6, 7 e 8. Somente uma ordem gera 8 (AAABBB).</textarea>
+<label>2.2 Dê uma ordem que termina em 4 e explique.</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Na ordem AABBBA, A lê 3 e calcula 4, mas não grava ainda. B lê 3, calcula 6 e grava. No fim A grava 4 por cima do valor de B. A multiplicação é perdida.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execução real do Python:
+AAABBB -&gt; 8
+BBBAAA -&gt; 7
+ABABAB -&gt; 6
+Ordens possíveis: 20
+TOTAL = 4: 9 ordens (ex.: AABBBA)
+TOTAL = 6: 9 ordens (ex.: AABABB)
+TOTAL = 7: 1 ordem (BBBAAA)
+TOTAL = 8: 1 ordem (AAABBB)</pre></div>
+<details><summary>Ver código original da prática (py)</summary><pre># Prática 2 - Todas as respostas possíveis da Figura 13.1 (Sebesta, p. 548)
+# Cole em https://onecompiler.com/python
+# TOTAL começa em 3. A tarefa A faz TOTAL + 1 e a tarefa B faz TOTAL * 2.
+# Cada tarefa tem 3 passos: 1) ler TOTAL  2) calcular  3) gravar TOTAL.
+from itertools import combinations
+
+
+def executa(ordem):                      # ordem: por exemplo &quot;AABABB&quot;
+    total = 3
+    reg = {&quot;A&quot;: 0, &quot;B&quot;: 0}               # o &quot;registrador&quot; de cada tarefa
+    passo = {&quot;A&quot;: 0, &quot;B&quot;: 0}
+    for t in ordem:
+        if passo[t] == 0:
+            reg[t] = total                                    # 1) ler
+        elif passo[t] == 1:
+            reg[t] = reg[t] + 1 if t == &quot;A&quot; else reg[t] * 2   # 2) calcular
+        else:
+            total = reg[t]                                    # 3) gravar
+        passo[t] += 1
+    return total
+
+
+print(&quot;AAABBB -&gt;&quot;, executa(&quot;AAABBB&quot;))   # A inteira, depois B inteira
+print(&quot;BBBAAA -&gt;&quot;, executa(&quot;BBBAAA&quot;))   # B inteira, depois A inteira
+print(&quot;ABABAB -&gt;&quot;, executa(&quot;ABABAB&quot;))   # alternando passo a passo
+
+resultados = {}
+for posicoes in combinations(range(6), 3):        # onde ficam os 3 passos de A
+    ordem = &quot;&quot;.join(&quot;A&quot; if i in posicoes else &quot;B&quot; for i in range(6))
+    resultados.setdefault(executa(ordem), []).append(ordem)
+
+print(&quot;Ordens possíveis:&quot;, sum(len(v) for v in resultados.values()))
+for valor in sorted(resultados):
+    ordens = resultados[valor]
+    print(f&quot;TOTAL = {valor}: {len(ordens):2d} ordens, por exemplo {ordens[0]}&quot;)</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 3 — Corrigindo a corrida (Java)</h2>
+<label>Previsão: qual a versão mais rápida? Alguma será incorreta?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">A versão sem sincronização pode terminar mais rápido, mas não é confiável. Entre as corretas, imagino que AtomicInteger tenha desempenho melhor do que synchronized.</textarea>
+<label>3.1 Quais versões funcionaram? Por que uma solução correta pode ser mais lenta?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">synchronized e AtomicInteger chegaram a 2.000.000 nas duas execuções. A versão sem proteção perdeu incrementos. O controle de acesso ao contador acrescenta um custo que a versão insegura não tem.</textarea>
+<label>3.2 Um AtomicInteger por conta garante uma transferência bancária segura?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Não. Retirar de uma conta e adicionar na outra são duas ações que precisam formar uma transação única. Seria necessário proteger a transferência inteira ou usar transação no banco de dados.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execuções reais de Java:
+1ª: sem sincronização 1895594 (5 ms); synchronized 2000000 (17 ms); AtomicInteger 2000000 (12 ms)
+2ª: sem sincronização 1902611 (6 ms); synchronized 2000000 (49 ms); AtomicInteger 2000000 (14 ms)</pre></div>
+<details><summary>Ver código original da prática (java)</summary><pre>// Prática 3 - Corrigindo a corrida: monitor e operação atômica (Sebesta 13.4 e 13.7, p. 557-578)
+// Cole em https://onecompiler.com/java
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Main {
+    static int semCuidado = 0, comSync = 0;
+    static AtomicInteger atomico = new AtomicInteger();
+
+    static synchronized void incSync() { comSync++; }   // uma thread por vez
+
+    static long mede(Runnable corpo) throws InterruptedException {
+        Thread a = new Thread(corpo), b = new Thread(corpo);
+        long inicio = System.nanoTime();
+        a.start(); b.start(); a.join(); b.join();
+        return (System.nanoTime() - inicio) / 1_000_000;  // milissegundos
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        int n = 1_000_000;
+        long ms1 = mede(() -&gt; { for (int i = 0; i &lt; n; i++) semCuidado++; });
+        long ms2 = mede(() -&gt; { for (int i = 0; i &lt; n; i++) incSync(); });
+        long ms3 = mede(() -&gt; { for (int i = 0; i &lt; n; i++) atomico.incrementAndGet(); });
+        System.out.println(&quot;esperado:          &quot; + 2 * n);
+        System.out.println(&quot;sem sincronizacao: &quot; + semCuidado + &quot; em &quot; + ms1 + &quot; ms&quot;);
+        System.out.println(&quot;synchronized:      &quot; + comSync + &quot; em &quot; + ms2 + &quot; ms&quot;);
+        System.out.println(&quot;AtomicInteger:     &quot; + atomico.get() + &quot; em &quot; + ms3 + &quot; ms&quot;);
+    }
+}</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 4 — Impasse (deadlock)</h2>
+<label>Previsão: A e B vão terminar?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Acho que não, porque cada thread pega um recurso e espera que a outra libere o segundo.</textarea>
+<label>4.1 Por que elas ficaram presas?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">A segurou X e ficou esperando Y, enquanto B segurou Y e ficou esperando X. Nenhuma das duas consegue liberar o recurso que a outra precisa.</textarea>
+<label>4.2 Como a mesma ordem de aquisição elimina o impasse?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Se ambas pegarem X antes de Y, uma precisa esperar logo no começo e não fica segurando Y enquanto aguarda X. Isso pode acontecer em transferências entre contas com bloqueios simultâneos.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execução real de Java, código original: IMPASSE: 2 threads presas.
+Execução da versão corrigida no OneCompiler: pendente.</pre></div>
+<details><summary>Ver código original da prática (java)</summary><pre>// Prática 4 - Impasse (deadlock) (Sebesta 13.2.1, p. 551)
+// Cole em https://onecompiler.com/java
+import java.lang.management.ManagementFactory;
+
+public class Main {
+    static final Object X = new Object(), Y = new Object();   // dois recursos
+
+    static void pausa() {
+        try { Thread.sleep(100); } catch (InterruptedException e) { }
+    }
+
+    public static void main(String[] args) throws Exception {
+        Thread a = new Thread(() -&gt; {
+            synchronized (X) { pausa(); synchronized (Y) { System.out.println(&quot;A terminou&quot;); } }
+        });
+        Thread b = new Thread(() -&gt; {
+            synchronized (Y) { pausa(); synchronized (X) { System.out.println(&quot;B terminou&quot;); } }
+        });
+        a.start(); b.start();
+        Thread.sleep(1000);                                    // espera 1 segundo
+        long[] presas = ManagementFactory.getThreadMXBean().findDeadlockedThreads();
+        System.out.println(presas == null ? &quot;sem impasse&quot;
+                                          : &quot;IMPASSE: &quot; + presas.length + &quot; threads presas&quot;);
+        System.exit(0);                                        // encerra o programa
+    }
+}</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 5 — Mensagens em vez de memória compartilhada (Go)</h2>
+<label>Previsão: 6 tarefas de 100 ms com 1, 3 e 6 trabalhadores.</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Minha previsão é cerca de 600 ms, 200 ms e 100 ms, respectivamente, sem contar pequenas despesas de execução.</textarea>
+<label>5.1 Por que o tempo cai? Por que não precisa de synchronized?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Mais trabalhadores processam tarefas ao mesmo tempo. O canal entrega as tarefas aos trabalhadores e, neste exemplo, eles não precisam incrementar um contador compartilhado.</textarea>
+<label>5.2 Por que o canal sem buffer trava e o buffer de uma mensagem resolve?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O envio em um canal sem buffer espera outra goroutine receber. Como não há receptor pronto, o programa para. Com buffer para um item, a mensagem pode ser enviada antes da leitura.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execução real do Go com 3 trabalhadores: 6 tarefas de 100 ms levaram 200 ms.
+Canal sem buffer: fatal error: all goroutines are asleep - deadlock!
+Canal com buffer de 1: imprime 1.
+Testes com 1 e 6 trabalhadores: pendentes.</pre></div>
+<details><summary>Ver código original da prática (go)</summary><pre>// Prática 5a - Passagem de mensagens com canais: grupo de trabalhadores (Sebesta 13.5, p. 559-560)
+// Cole em https://onecompiler.com/go
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+    &quot;time&quot;
+)
+
+const trabalhadores = 3                      // mude para 1 e depois para 6
+
+func trabalhador(id int, tarefas &lt;-chan int, wg *sync.WaitGroup) {
+    defer wg.Done()
+    for t := range tarefas {                 // recebe tarefas até o canal ser fechado
+        time.Sleep(100 * time.Millisecond)   // simula um trabalho de 100 ms
+        fmt.Printf(&quot;trabalhador %d fez a tarefa %d\n&quot;, id, t)
+    }
+}
+
+func main() {
+    tarefas := make(chan int, 6)             // canal com espaço para 6 mensagens
+    var wg sync.WaitGroup
+    inicio := time.Now()
+    for id := 1; id &lt;= trabalhadores; id++ {
+        wg.Add(1)
+        go trabalhador(id, tarefas, &amp;wg)     // goroutine: uma tarefa concorrente leve
+    }
+    for t := 1; t &lt;= 6; t++ {
+        tarefas &lt;- t                         // envia uma mensagem
+    }
+    close(tarefas)
+    wg.Wait()                                // espera todos os trabalhadores
+    fmt.Println(trabalhadores, &quot;trabalhadores, 6 tarefas de 100 ms: levou&quot;,
+        time.Since(inicio).Round(10*time.Millisecond))
+}</pre></details>
+<details><summary>Ver código original da prática (go)</summary><pre>// Prática 5b - Um canal sem ninguém do outro lado
+// Cole em https://onecompiler.com/go
+package main
+
+import &quot;fmt&quot;
+
+func main() {
+    ch := make(chan int)                     // canal SEM espaço (sem buffer)
+    ch &lt;- 1                                  // envia... e espera alguém receber
+    fmt.Println(&lt;-ch)
+}</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 6 — O compilador como guarda (Rust)</h2>
+<label>Previsão: o código compilará?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Imagino que Rust impeça compartilhar livremente uma variável local com uma thread, porque verifica propriedade e tempo de vida dos dados.</textarea>
+<label>6.1 Por que o código com move imprime 0?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O valor inteiro é copiado para a thread. Ela modifica sua própria cópia, mas a variável que ficou em main continua igual a zero.</textarea>
+<label>6.2 Quando o erro aparece no Java e no Rust?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">No Java, a condição de corrida é percebida pelo resultado da execução. No Rust, o compilador já bloqueia uma tentativa de compartilhamento inseguro. Isso aumenta a segurança, mas exige entender as regras de ownership e sincronização.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execuções do compilador Rust, da versão com move e de Arc&lt;Mutex&gt;: pendentes.
+Resultado esperado para o exemplo protegido: contador = 400000 (ainda não confirmado em execução).</pre></div>
+<details><summary>Ver código original da prática (rs)</summary><pre>// Prática 6a - Rust: tentando compartilhar uma variável entre threads
+// Cole em https://onecompiler.com/rust
+use std::thread;
+
+fn main() {
+    let mut contador = 0;
+    let t = thread::spawn(|| {
+        contador += 1;                       // a thread altera a variável de main
+    });
+    t.join().unwrap();
+    println!(&quot;{}&quot;, contador);
+}</pre></details>
+<details><summary>Ver código original da prática (rs)</summary><pre>// Prática 6b - Rust: compartilhar com Arc (contagem de referências) e Mutex (exclusão mútua)
+// Cole em https://onecompiler.com/rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+    let contador = Arc::new(Mutex::new(0));  // compartilhado e protegido
+    let mut threads = Vec::new();
+    for _ in 0..4 {
+        let c = Arc::clone(&amp;contador);
+        threads.push(thread::spawn(move || {
+            for _ in 0..100_000 {
+                *c.lock().unwrap() += 1;     // trava, soma e destrava
+            }
+        }));
+    }
+    for t in threads { t.join().unwrap(); }
+    println!(&quot;contador = {}&quot;, *contador.lock().unwrap());
+}</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Prática 7 — Uma thread só: o laço de eventos (JavaScript)</h2>
+<label>Previsão: em qual ordem aparecem as letras?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Acredito que apareçam A, D, C, B e E.</textarea>
+<label>7.1 Por que B (timer 0) sai depois de C e D?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">A e D são síncronos. A Promise coloca C na fila de microtarefas, executada antes dos timers. O callback de B só roda quando a pilha principal fica livre.</textarea>
+<label>7.2 Por que E, com timer de 10 ms, demora cerca de 300 ms?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O código executa uma espera ocupada por 300 ms e bloqueia o laço de eventos. Em um servidor Node.js, uma tarefa pesada assim também atrasa o atendimento de outras requisições.</textarea>
+<div class="evidence"><b>Registro da execução / observação</b><pre>Execução real em Node.js:
+A
+D
+C
+B
+E: timer de 10 ms rodou depois de 300 ms</pre></div>
+<details><summary>Ver código original da prática (js)</summary><pre>// Prática 7 - JavaScript: uma única thread e um laço de eventos
+// Cole em https://onecompiler.com/nodejs
+console.log(&quot;A&quot;);
+setTimeout(() =&gt; console.log(&quot;B&quot;), 0);
+Promise.resolve().then(() =&gt; console.log(&quot;C&quot;));
+console.log(&quot;D&quot;);
+
+function ocupado(ms) {                       // laço que NÃO devolve o controle
+  const fim = Date.now() + ms;
+  while (Date.now() &lt; fim) { }
+}
+
+setTimeout(() =&gt; {
+  const t0 = Date.now();
+  setTimeout(() =&gt; console.log(&quot;E: timer de 10 ms rodou depois de &quot; + (Date.now() - t0) + &quot; ms&quot;), 10);
+  ocupado(300);                              // trava a única thread por 300 ms
+}, 0);</pre></details>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<section><h2>Fechamento — Quem impede a corrida?</h2>
+<label>Java sem sincronização</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Ninguém: há condição de corrida.</textarea>
+<label>Java com synchronized</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O programador, por meio da sincronização.</textarea>
+<label>Go com canais</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O projeto do programa, que organiza as tarefas sem um contador compartilhado.</textarea>
+<label>Rust com Arc e Mutex</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O programador usa Mutex, enquanto Rust verifica as regras de acesso e propriedade.</textarea>
+<label>JavaScript com uma thread</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O código JavaScript do exemplo roda em uma única thread, mas tarefas longas podem bloquear os eventos.</textarea>
+<label>8.1 Duas pessoas tentam comprar o último ingresso. Qual o problema e a solução?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">As duas podem consultar o mesmo estoque e confirmar a compra do último lugar. A verificação e a reserva precisam ocorrer em uma única operação protegida, por exemplo com uma transação no banco.</textarea>
+<label>8.2 O que mais surpreendeu você?</label><textarea oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">O mesmo código pode funcionar em uma execução e perder informações em outra, sem apresentar um erro explícito.</textarea>
+<div class="upload"><label>Print ou imagem da execução (opcional)</label><input type="file" accept="image/*" onchange="imagem(this)"><div class="imagem"></div></div></section>
+<footer class="note">Referência: Sebesta, Conceitos de Linguagens de Programação, 11ª ed., capítulo 13. Atividade organizada a partir de Aula010_Concorrencia.pptx e Aula010_Laboratorio_Concorrencia.html.</footer></main>
+<script>
+function imagem(el){let f=el.files[0];if(!f)return;let rd=new FileReader();rd.onload=()=>{el.nextElementSibling.innerHTML='<img alt="Print anexado" src="'+rd.result+'">'};rd.readAsDataURL(f)}
+function baixar(){const c=document.documentElement.cloneNode(true);const a=[...document.querySelectorAll('textarea')];const b=[...c.querySelectorAll('textarea')];b.forEach((x,i)=>{x.textContent=a[i].value});const os=[...document.querySelectorAll('input:not([type=file])')],ns=[...c.querySelectorAll('input:not([type=file])')];ns.forEach((x,i)=>x.setAttribute('value',os[i].value));const imgs=[...document.querySelectorAll('.imagem')],dest=[...c.querySelectorAll('.imagem')];dest.forEach((x,i)=>x.innerHTML=imgs[i].innerHTML);const blob=new Blob(['<!doctype html>\n'+c.outerHTML],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='Aula10_Victor_Sgobbi.html';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+</script></body></html>
